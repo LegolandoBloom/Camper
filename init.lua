@@ -43,6 +43,14 @@ function Init_CamperSavedVariables()
     if CamperCharacter == nil then CamperCharacter = {} end
     if CamperAudio == nil then CamperAudio = {} end
     if CamperUI == nil then CamperUI = {} end
+
+        -- CamperMinimapButton
+    if CamperMinimapButton == nil then
+        CamperMinimapButton = {}
+    end
+    if CamperMinimapButton.show == nil then
+        CamperMinimapButton.show = true
+    end
 end
 
 -- ___ temporary measure for the Forever Branch ___

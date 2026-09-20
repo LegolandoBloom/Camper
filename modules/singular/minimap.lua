@@ -48,7 +48,7 @@ function Camper_InitMinimapButton()
     -- Camper.configPanel.tab3.contents.showMinimapButton.checkbox:SetChecked(true)
 end
 
-SLASH_CAMPERMINIMAP1 = T["/campmini"]
+SLASH_CAMPERMINIMAP1 = "/campmini"
 SlashCmdList["CAMPERMINIMAP"] = function()
     if minimapButtonCreated == false then 
         Camper_InitMinimapButton()
