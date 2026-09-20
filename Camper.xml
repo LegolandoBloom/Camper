@@ -1,0 +1,44 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    
+    <Frame name="Camper" parentKey="Camper" parent="UIParent" hidden="false">
+        <Scripts>
+            <OnLoad function="Camper_OnLoad"/>
+        </Scripts>
+        <Frames>
+            <Frame name="$parent_ConfigPanel" parentKey="configPanel" toplevel="true" clampedToScreen="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" hidden="true">
+                <Size x="300" y="200"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        tinsert(UISpecialFrames, self:GetName())
+                        self.TitleText:SetText(Camper_Translate["Camper Configuration"])
+                        self.wakeUpButton.text:SetText(Camper_Translate["Wake!"])
+                        self:SetMovable(true)
+                        self:RegisterForDrag("LeftButton")
+                    </OnLoad>
+                    <OnMouseDown>
+                        self:Raise()
+                    </OnMouseDown>
+                    <OnDragStart>
+                        self:StartMoving()
+                    </OnDragStart>
+                    <OnDragStop>
+                        self:StopMovingOrSizing()
+                    </OnDragStop>
+                </Scripts>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <Texture name="$parent_Decoration" parentKey="decoration" file="" alpha="0.5">
+                            <Anchors>
+                                <Anchor point="CENTER" x="8" y="13"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+    </Frame>
+</Ui>

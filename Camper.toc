@@ -1,0 +1,42 @@
+## Interface: 16001
+## Title: Camper
+## Notes: I have set up camp here!
+## Version: Camper @project-version@
+## Author: LegolandoBloom
+## SavedVariables: CamperConfig, Camper_TinyOptions, CamperMinimapButton, CamperTutorial, CamperClassicConfig, CamperBobberScannerUI, CamperCharacter, Camper_SlottedExtraToys, Camper_SlottedExtraItems, Camper_SwapoutItemsSaved, Camper_CVars, CamperClassic_CVars, CamperAudio
+## IconTexture: Interface\AddOns\Camper\images\campericon.png
+## X-Curse-Project-ID: 1703336
+
+## Category-enUS: Professions
+## Category-deDE: Berufe
+## Category-esES: Profesiones
+## Category-esMX: Profesiones
+## Category-frFR: Métiers
+## Category-itIT: Professioni
+## Category-koKR: 전문 기술
+## Category-ptBR: Profissões
+## Category-ruRU: Профессии
+## Category-zhCN: 专业
+## Category-zhTW: 專業技能
+
+#@no-lib-strip@
+libraries\embeds.xml
+translations\translations.xml
+#@end-no-lib-strip@
+
+campTemplates\LegoUtils\embeds.xml
+campTemplates\GeneralTemplates\RetailTemplates.lua
+campTemplates\GeneralTemplates\RetailTemplates.xml
+campTemplates\embeds.xml
+
+forever_savedVariables.lua
+
+debug.lua
+init.lua
+secrets\secrets.lua
+Camper.lua
+
+modules\embeds_all.xml
+modules\embeds_classic.xml
+
+Camper.xml

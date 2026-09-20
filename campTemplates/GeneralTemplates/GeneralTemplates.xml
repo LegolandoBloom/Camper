@@ -1,0 +1,339 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    
+    
+    <GameTooltip name= "Legolando_PictureTooltipTemplate" mixin="Legolando_PictureTooltipMixin" inherits="GameTooltipTemplate" virtual="true">
+        <KeyValues>
+            <KeyValue key="anchorTexture" value="TOPLEFT" type="string"/>
+            <KeyValue key="paddingL" value="0" type="number"/>
+            <KeyValue key="paddingB" value="0" type="number"/>
+            <KeyValue key="paddingR" value="0" type="number"/>
+            <KeyValue key="paddingT" value="0" type="number"/>
+        </KeyValues>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="$parent_Texture" parentKey="texture">
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnShow inherit="append" method="OnShow"/>
+            <OnHide inherit="append" method="OnHide"/>
+        </Scripts>
+    </GameTooltip>
+    
+    <Frame name="Camper_WarningFrame" toplevel="true" frameStrata="DIALOG" inherits="BasicFrameTemplateWithInset" hidden="true" virtual="true">
+        <Size x="320" y="128"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_MainText" parentKey="mainText" inherits="GameFontHighlight">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-35"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_OtherText" parentKey="otherText" inherits="SpellFont_Small">
+                    <Color r="0.8" g="0.8" b="0.8"/>
+                    <Anchors>
+                        <Anchor point="BOTTOM" x="0" y="22"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button parentKey="yesButton" inherits="GameMenuButtonTemplate">
+                <Size x="96" y="20"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent_MainText" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+                </Anchors>
+            </Button>
+            <Button parentKey="noButton" inherits="GameMenuButtonTemplate">
+                <Size x="96" y="20"/>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent_MainText" relativePoint="BOTTOMRIGHT" x="0" y="-10"/>
+                </Anchors>
+            </Button>
+        </Frames>
+    </Frame>
+    
+    
+
+    <Button name="ExtraToyButtonTemplate" inherits="Camper_SimplifiedActionButtonTemplate" virtual="true">
+        <Scripts>
+            <OnEnter>
+                if self.toyID ~= 0 then
+                    GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", 45)
+                    GameTooltip:SetToyByItemID(self.toyID)
+                    GameTooltip:Show()
+                end
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide()
+            </OnLeave>
+        </Scripts>
+        <Frames>
+            <Button name="$parent_CloseButton" parentKey="closeButton" inherits="UIPanelCloseButtonNoScripts" hidden="true">
+                <Size x="20" y="20"/>,
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="$parent" relativePoint="TOPRIGHT" x="-3" y="-5"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick function="Camper_ToyBox_RemoveExtraToy"/>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Button>
+    
+    <Button name="ExtraItemButtonTemplate" inherits="Camper_SimplifiedActionButtonTemplate" mixin="ExtraItemButtonMixin" virtual="true">
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+            <OnEnter>
+                if self.toyID ~= 0 and self.toyID then
+                    GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", 45)
+                    GameTooltip:SetToyByItemID(self.toyID)
+                    GameTooltip:Show()
+                end
+            </OnEnter>
+            <OnLeave>
+                GameTooltip:Hide()
+            </OnLeave>
+            <OnReceiveDrag>
+                local cursorInfo, macroIndex = GetCursorInfo()
+                if cursorInfo == "item" then
+                    Camper_GrabCursorItem(self)
+                elseif cursorInfo == "macro" then
+                    Camper_GrabCursorMacro(self, macroIndex)
+                end
+            </OnReceiveDrag>
+            <OnMouseUp>
+                if button ~= "LeftButton" or upInside == false then return end
+                local cursorInfo, macroIndex = GetCursorInfo()
+                if cursorInfo == "item" then
+                    Camper_GrabCursorItem(self)
+                elseif cursorInfo == "macro" then
+                    Camper_GrabCursorMacro(self, macroIndex)
+                end
+            </OnMouseUp>
+        </Scripts>
+        <Frames>
+            <Button name="$parent_TimeButton" parentKey="timeButton" toplevel="true" inherits="UIPanelSquareButton" hidden="true">
+                <Size x="22" y="22"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-3" y="4"/>
+                </Anchors>
+                <KeyValues>
+                    <KeyValue key="tooltipText" value="Set Timer" type="string"/>
+                </KeyValues>
+                <Scripts>
+                    <OnLoad>
+                        self.icon:SetTexture("Interface/AddOns/Camper/images/timeIcon.png")
+                        self.icon:SetTexCoord(0, 1, 0, 1)
+                        self.icon:SetSize(26, 26)
+                        self.icon:Show()
+                    </OnLoad>
+                    <OnEnter>
+                        self.inputBoxes:Show()
+                        self.inputBoxes:Raise()
+                        GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 0)
+                        GameTooltip:AddLine(self.tooltipText, 1, 0.82, 0)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        if self.inputBoxes.minutes:HasFocus() == false and self.inputBoxes.seconds:HasFocus() == false then
+                            self.inputBoxes:Hide()
+                        end
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnClick>
+                        self.inputBoxes.minutes:SetFocus()
+                    </OnClick>
+                </Scripts>
+                <Frames>
+                    <Frame name="$parent_InputBoxes" parentKey="inputBoxes" inherits="Legolando_MinSecEditBoxesTemplate_Camper" hidden="true">
+                        <Size x="38" y="25"/>
+                        <Anchors>
+                            <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="1" y="-5"/>
+                        </Anchors>
+                        <KeyValues>
+                            <KeyValue key="active" type="boolean" value="false"/>
+                        </KeyValues>
+                        <Scripts>
+                            <OnHide>
+                                self:UnregisterEvent("GLOBAL_MOUSE_DOWN")
+                            </OnHide>
+                            <OnShow inherit="append">
+                                self:RegisterEvent("GLOBAL_MOUSE_DOWN")
+                            </OnShow>
+                            <OnEvent>
+                                if event == "GLOBAL_MOUSE_DOWN" then
+                                    if not self:IsShown() then return end
+                                    if self:IsMouseOver() then return end
+                                    if self:GetParent():IsMouseOver() then return end
+                                    self:Hide()
+                                end
+                            </OnEvent>
+                        </Scripts>
+                    </Frame>
+                </Frames>
+            </Button>
+            <Frame name="$parent_MoreAdjustmentsCollapseFrame" parentKey="collapseFrame" toplevel="true" inherits="Legolando_CollapseConfigTemplate2_Camper" hidden="false">
+                <Size x="1" y="1"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent_TimeButton" relativePoint="BOTTOMLEFT" x="2" y="1"/>
+                </Anchors>
+            </Frame>
+            <Button name="$parent_CloseButton" parentKey="closeButton" inherits="UIPanelCloseButtonNoScripts" hidden="true">
+                <Size x="20" y="20"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="$parent" relativePoint="TOPRIGHT" x="-3" y="-4"/>
+                </Anchors>
+                <Scripts>
+                    <OnClick function="Camper_RemoveExtraItem"/>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Button>
+    
+    <Frame name="CheckboxFrameTemplate_Camper" mixin="Camper_CheckboxFrameMixin" virtual="true">
+        <Size x="1" y="1"/>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_Text" parentKey="text" hidden="false" inherits="GameFontNormal">
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT"/>
+                    </Anchors>
+                    <Scripts>
+                        <OnEnter>
+                            if not self.tooltip then return end
+                            GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", 3, -3)
+                            local colorBlu = CreateColor(0.61, 0.85, 0.92)
+                            GameTooltip:AddLine(colorBlu:WrapTextInColorCode(self:GetText()))
+                            GameTooltip:AddLine(self.tooltip, 1, 1, 1, 0)
+                            GameTooltip:Show()
+                        </OnEnter>
+                        <OnLeave>
+                            if not self.tooltip then return end
+                            GameTooltip:Hide()
+                        </OnLeave>
+                    </Scripts>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <CheckButton name="$parent_Checkbox" parentKey="checkbox">
+                <Size x="24" y="24"/>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parent_Text" relativePoint="RIGHT"/>
+                </Anchors>
+                <HitRectInsets>
+                    <AbsInset left="0" right="0" top="0" bottom="8"/>
+                </HitRectInsets>
+                <Scripts>
+                    <OnEnter>
+                        local text = self:GetParent().text
+                        if not text.tooltip then return end
+                        GameTooltip:SetOwner(text, "ANCHOR_BOTTOMRIGHT", 3, -3)
+                        local colorBlu = CreateColor(0.61, 0.85, 0.92)
+                        GameTooltip:AddLine(colorBlu:WrapTextInColorCode(text:GetText()))
+                        GameTooltip:AddLine(text.tooltip, 1, 1, 1, 0)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        local text = self:GetParent().text
+                        if not text.tooltip then return end
+                        GameTooltip:Hide()
+                    </OnLeave>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+                <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+                <CheckedTexture name="$parentCheckedTexture" file="Interface\Buttons\UI-CheckBox-Check"/>
+                <DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+            </CheckButton>
+        </Frames>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_DisabledText" parentKey="disabledText" justifyH="LEFT" hidden="true" inherits="SystemFont_Shadow_Small">
+                    <Anchors>
+                        <Anchor point="LEFT" relativeTo="$parent_Checkbox" relativePoint="RIGHT"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Frame>
+
+
+    <Button name="Camper_UIPanelLargeSilverButton" virtual="true">
+		<Size x="72" y="72"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\Buttons\UI-SilverButtonLG-Left-Up">
+					<Size x="64" y="104"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\Buttons\UI-SilverButtonLG-Right-Up">
+					<Size x="64" y="104"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentMiddle" file="Interface\Buttons\UI-SilverButtonLG-Mid-Up">
+					<Size x="64" y="104"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT" x="0" y="0"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentRight" relativePoint="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+            <Layer level="HIGHLIGHT">
+                <Texture name="$parentLeft" file="Interface\Buttons\UI-SilverButtonLG-Left-Hi">
+                    <Size x="64" y="104"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="0" y="0"/>
+                    </Anchors>
+                    </Texture>
+                    <Texture name="$parentRight" file="Interface\Buttons\UI-SilverButtonLG-Right-Hi">
+                    <Size x="64" y="104"/>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" x="0" y="0"/>
+                    </Anchors>
+                    </Texture>
+                    <Texture name="$parentMiddle" file="Interface\Buttons\UI-SilverButtonLG-Mid-Hi">
+                    <Size x="64" y="104"/>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT" x="0" y="0"/>
+                        <Anchor point="TOPRIGHT" relativeTo="$parentRight" relativePoint="TOPLEFT" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+		</Layers>
+        <Scripts>
+        <OnMouseDown>
+            if ( self:IsEnabled() ) then
+            local name = self:GetName();
+            _G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-SilverButtonLG-Left-Down");
+            _G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-SilverButtonLG-Mid-Down");
+            _G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-SilverButtonLG-Right-Down");
+            local contentsFrame = _G[name.."ContentsFrame"];
+            if ( contentsFrame ) then
+                contentsFrame:SetPoint("TOPLEFT", -2, -1);
+            end
+            end
+        </OnMouseDown>
+        <OnMouseUp>
+            if ( self:IsEnabled() ) then
+            local name = self:GetName();
+            _G[name.."Left"]:SetTexture("Interface\\Buttons\\UI-SilverButtonLG-Left-Up");
+            _G[name.."Middle"]:SetTexture("Interface\\Buttons\\UI-SilverButtonLG-Mid-Up");
+            _G[name.."Right"]:SetTexture("Interface\\Buttons\\UI-SilverButtonLG-Right-Up");
+            local contentsFrame = _G[name.."ContentsFrame"];
+            if ( contentsFrame ) then
+                contentsFrame:SetPoint("TOPLEFT", 0, 0);
+            end
+            end
+        </OnMouseUp>
+        </Scripts>
+	</Button>
+    
+</Ui>

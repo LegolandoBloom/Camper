@@ -1,0 +1,29 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Include file="lego_lua.lua"/>
+
+    <Include file="Legolando_HelpTipTemplate\Legolando_HelpTipTemplate.xml"/>
+
+    <Include file="Legolando_TooltipTemplates\Legolando_TooltipTemplates.xml"/>
+    <Include file="Legolando_SimplePromotionTemplate\Legolando_SimplePromotionTemplate.xml"/>
+
+    <Include file="Legolando_KeybindButtonTemplate\Legolando_KeybindButtonTemplate.xml"/>
+
+    <Include file="Legolando_TempCVarHandlerTemplate\Legolando_TempCVarHandlerTemplate.xml"/>
+
+    <Include file="Legolando_MouseScanAnim\Legolando_MouseScanAnim.xml"/>
+
+    <Include file="Legolando_SimpleButtonTemplates\Legolando_SimpleButtonTemplates.xml"/>
+    <Include file="Legolando_CollapseConfigTemplate\Legolando_CollapseConfigTemplate.xml"/>
+
+    <Include file="Legolando_CheckboxFrameTemplate\Legolando_CheckboxFrameTemplate.xml"/>
+
+    <Include file="Legolando_SliderTemplates\Legolando_SliderWithFillTemplate.xml"/>
+
+    <Include file="Legolando_EditBoxTemplates\Legolando_EditBoxTemplates.xml"/>
+
+    <Include file="Legolando_SleepAnimFrameTemplate\Legolando_SleepAnimFrameTemplate.xml"/>
+    
+    
+</Ui>

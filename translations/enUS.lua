@@ -1,0 +1,37 @@
+Camper_Translate = {}
+local T = Camper_Translate
+
+local colorYello = CreateColor(1.0, 0.82, 0.0)
+local colorGrae = CreateColor(0.85, 0.85, 0.85)
+local colorBlu = CreateColor(0.61, 0.85, 0.92)
+local colorWhite = CreateColor(1, 1, 1)
+local colorGreen = CreateColor(0, 1, 0)
+local colorPurple = CreateColor(0.64, 0.3, 0.71)
+local colorBrown = CreateColor(0.67, 0.41, 0)
+local colorRed = CreateColor(1, 0, 0)
+local colorUnderlight = CreateColor(0.9, 0.8, 0.5)
+local colorDarkRed = CreateColor(0.68, 0, 0)
+local colorDarkBlu = CreateColor(0.12, 0.5, 1)
+
+
+T["Left Click: Config Panel"] = "Left Click: " .. colorYello:WrapTextInColorCode("Config Panel")
+
+T["Camper: Minimap Icon hidden, /campmini to show."] = "Camper: Minimap Icon hidden, /campmini to show."
+
+T["Middle Button: Hide Minimap Icon"] = "Middle Button: " .. colorYello:WrapTextInColorCode("Hide Minimap Icon")
+
+T["Left Click: Config Panel"] = "Left Click: " .. colorYello:WrapTextInColorCode("Config Panel")
+
+T["Camper: Minimap Button Shown"] = "Camper: Minimap Button Shown"
+
+T["Camper: Minimap Button Hidden"] = "Camper: Minimap Button Hidden"
+
+T["Whether Camper's minimap button is shown."] = "Whether Camper's minimap button is shown."
+
+T["You need to open the Config Panel to change Camper's settings!"
+.. "\n\n(Hint) You can also:\n - type /camper\n - Click the Minimap/AddonCompartment Button\nto open it."] = "You need to open the Config Panel to change Camper's settings!"
+.. "\n\n(Hint) You can also:\n - type /camper\n - Click the Minimap/AddonCompartment Button\nto open it."
+
+
+T["Camper: cannot open Config Panel in combat."] = "Camper: cannot open Config Panel in combat."
+T["Please try again after combat ends."] = "Please try again after combat ends."

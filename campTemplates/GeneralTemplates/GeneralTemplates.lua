@@ -1,0 +1,112 @@
+local T = Camper_Translate
+
+Legolando_PictureTooltipMixin = {}
+
+function Legolando_PictureTooltipMixin:OnShow()
+    self:SetPadding(self.paddingL, self.paddingB, self.paddingR, self.paddingT)
+end
+
+function Legolando_PictureTooltipMixin:PlaceTexture(texturePath, width, height, anchor, padOffsetX, padOffsetY)
+    if not texturePath then return end
+    self.texture:ClearAllPoints()
+    self.texture:SetTexture(texturePath)
+    self.texture:SetSize(width, height)
+    self.texture:SetPoint(anchor, self, anchor)
+    self:ResetPadding()
+    if anchor == "TOPLEFT" then
+        self.paddingL = width + padOffsetX
+        self.paddingT = height + padOffsetY
+    elseif anchor == "TOPRIGHT" then
+        self.paddingR = width + padOffsetX
+        self.paddingT = height + padOffsetY
+    elseif anchor == "BOTTOMLEFT" then
+        self.paddingL = width + padOffsetX
+        self.paddingB = height + padOffsetY
+    elseif anchor == "BOTTOMRIGHT" then
+        self.paddingR = width + padOffsetX
+        self.paddingB = height + padOffsetY
+    end
+end
+
+function Legolando_PictureTooltipMixin:ResetPadding()
+    self.paddingL = 0
+    self.paddingB = 0
+    self.paddingR = 0
+    self.paddingT = 0
+end
+
+function Legolando_PictureTooltipMixin:OnHide()
+    self.texture:SetTexture(nil)
+    self.texture:ClearAllPoints()
+    self:ResetPadding()
+end
+
+
+Camper_CheckboxFrameMixin = {};
+
+function Camper_CheckboxFrameMixin:greyOut()
+    self.checkbox:SetChecked(false)
+    self.checkbox:Disable()
+    self.text:SetTextColor(0.9, 0.9, 0.9)
+    self.disabledText:Show()
+    if self.dropDown then
+        self.dropDown:Hide()
+    end
+end
+
+
+Camper_CombatWeaponSwapButtonMixin = {};
+
+local function _isEquipItemValid(itemInfo)
+    if C_Item.IsEquippableItem(itemInfo) == false then return false end
+    if C_Item.GetItemCount(itemInfo) < 1 then return false end
+    return true
+end
+
+function Camper_CombatWeaponSwapButtonMixin:setMacro(swapTable)
+    if not swapTable or next(swapTable) == nil then return end
+    local _, firstLink = next(swapTable)
+    local macroBody = ""
+    for location, link in pairs(swapTable) do
+        if _isEquipItemValid(link) then
+            local name = C_Item.GetItemNameByID(link)
+            Camper_BetaPrint(4, "Camper_CombatWeaponSwapButtonMixin: ", name)
+            macroBody = macroBody .. "/equipslot " .. location .. " " .. name .. "\n"
+        end
+    end
+    if not macroBody or not firstLink then return end
+    self.icon:SetTexture(C_Item.GetItemIconByID(firstLink))
+    self:SetAttribute("macrotext", macroBody)
+    self:Show()
+    local colorPurple = CreateColor(0.64, 0.3, 0.71)
+    Camper_BetaPrint(4, colorPurple:WrapTextInColorCode("Camper_CombatWeaponSwapButtonMixin: ") .. "setMacro: MACRO TEXT\n" , macroBody)
+end
+
+ExtraItemButtonMixin = {}
+
+function ExtraItemButtonMixin:OnLoad()
+    local collapseFrame = self.collapseFrame
+    collapseFrame.expandButton:SetSize(18, 12)
+    collapseFrame:Init(nil, "Down")
+    local popup = self.collapseFrame.popup
+    popup:AdjustPointsOffset(3, 1)
+    popup:SetSize(130, 80)
+    popup.delayOffsetSlider = CreateFrame("Slider", popup:GetDebugName() .. "_DelayOffsetSlider", popup, "Legolando_SliderColorFillTemplate_Camper")
+    local delayOffsetSlider = popup.delayOffsetSlider
+    delayOffsetSlider:SetSize(62, 10)
+    delayOffsetSlider:SetScale(0.9)
+    delayOffsetSlider:SetOrientation("HORIZONTAL")
+    delayOffsetSlider:SetPoint("TOPLEFT", popup, "TOPLEFT", 17, -32)
+    delayOffsetSlider.editBox:SetScale(0.9)
+    delayOffsetSlider.editBox:AdjustPointsOffset(0, 1)
+    
+    local newTexture3 = self.collapseFrame:CreateTexture("Camper_NewTexture3", "ARTWORK")
+    newTexture3:SetTexture("Interface/AddOns/Camper/images/newfeature.png")
+    newTexture3:SetSize(28, 24)
+    newTexture3:SetPoint("LEFT", self.collapseFrame.expandButton, "RIGHT", 0, 0)
+
+    local newTexture4 = self.collapseFrame.popup:CreateTexture("Camper_NewTexture4", "ARTWORK")
+    newTexture4:SetTexture("Interface/AddOns/Camper/images/newfeature.png")
+    newTexture4:SetSize(48, 24)
+    newTexture4:SetPoint("BOTTOMRIGHT", self.collapseFrame.popup, "BOTTOMRIGHT", -8, 8)
+end

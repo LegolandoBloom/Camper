@@ -1,0 +1,26 @@
+{
+    "Lua.diagnostics.globals": [
+        "PROFESSIONS_FISHING",
+        "OKAY",
+        "HELP_TIP_BUTTON_GOT_IT",
+        "NEXT",
+        "COLLECTION_PAGE_NUMBER",
+        "SLASH_TARGET_MARKER3",
+        "LE_EXPANSION_LEVEL_CURRENT",
+        "LE_EXPANSION_CLASSIC",
+        "CamperMinimapButton",
+        "CUSTOM",
+        "ALT_KEY",
+        "CTRL_KEY",
+        "SHIFT_KEY",
+        "NONE_KEY",
+        "VIDEO_OPTIONS_NEED_CLIENTRESTART",
+        "VIDEO_OPTIONS_RECOMMENDED",
+        "Camper",
+        "LibDBIcon10_CamperMinimap",
+        "Camper_BetaPrint",
+        "Camper_BetaDump",
+        "GAME_LOCALE",
+        "LE_EXPANSION_MIDNIGHT"
+    ]
+}

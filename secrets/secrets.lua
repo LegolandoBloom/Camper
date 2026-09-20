@@ -1,0 +1,92 @@
+-- 'camp' is the camper namespace
+local addonName, camp = ...
+camp.secrets = {}
+local secrets = camp.secrets
+
+local VERSION_RETAIL = 1
+local VERSION_FOREVER = 4
+
+local gameVersion = camp.gameVersion
+
+local debugChannel = 10
+local colorDebug = CreateColor(1, 0, 0) -- red
+
+secrets.restrictionsActive = {
+    Combat = false,
+    Encounter = false,
+    ChallengeModes = false,
+    PvPMatch = false,
+    Map = false,
+    Chat = false,
+}
+
+
+function Camper_IsSecret(value)
+    if gameVersion == VERSION_RETAIL or gameVersion == VERSION_FOREVER then
+        if issecretvalue(value) then return true end
+    end
+    return false
+end
+function Camper_ScrubSecret(...)
+    if gameVersion == VERSION_RETAIL or gameVersion == VERSION_FOREVER then
+        return scrubsecretvalues(...)
+    end
+    return ...
+end
+
+-- Why start index at 0? Wow restriction type goes from 0->5
+local enum_RestrictionType = {
+    [0] = "Combat",
+    [1] = "Encounter",
+    [2] = "ChallengeModes",
+    [3] = "PvPMatch",
+    [4] = "Map",
+    [5] = "Chat",
+}
+local enum_RestrictionState = {
+    [0] = "Inactive",
+    [1] = "Activating",
+    [2] = "Active",
+}
+
+-- Returns true if any of the types given as arguments is restricted
+function Camper_IsAddonSecretRestrictedForTypes(...)
+    if gameVersion ~= VERSION_RETAIL and gameVersion ~= VERSION_FOREVER then return false end
+    local argTable = {...}
+    local isRestricted = false
+    local restrictedTypesFromArguments = {}
+    for i, v in pairs(argTable) do
+        local type = secrets.restrictionsActive[v]
+        if type == nil then geterrorhandler()("Camper: Wrong Restriction Type")end
+        if type == true then 
+            isRestricted = true
+            table.insert(restrictedTypesFromArguments, v)
+        end
+    end
+    return isRestricted, restrictedTypesFromArguments
+end
+
+local function secrets_Events(self, event, unit, ...)
+    local arg4, arg5 = ...
+    if event == "ADDON_RESTRICTION_STATE_CHANGED" then
+        local restrictionType = enum_RestrictionType[unit]
+        local restrictionState = enum_RestrictionState[arg4]
+        -- print(restrictionType, "=", enum_RestrictionState[arg4])
+        if restrictionState == "Activating" or restrictionState == "Active" then
+            secrets.restrictionsActive[restrictionType] = true
+        elseif restrictionState == "Inactive" then
+            secrets.restrictionsActive[restrictionType] = false
+        end
+        local isRestricted, restrictedTypeTable = Camper_IsAddonSecretRestrictedForTypes("Combat", "Encounter", "ChallengeModes", "PvPMatch", "Map")
+        if isRestricted == true then
+            Camper_BetaPrint(debugChannel, colorDebug:WrapTextInColorCode("Secrets:") .. " I am restricted by:")
+            Camper_BetaDump(debugChannel, restrictedTypeTable)
+        else
+            Camper_BetaPrint(debugChannel, colorDebug:WrapTextInColorCode("Secrets:") .. " I am not restricted")
+        end
+    end
+end
+
+local secretsFrame = CreateFrame("Frame")
+secretsFrame:RegisterEvent("ADDON_RESTRICTION_STATE_CHANGED")
+secretsFrame:SetScript("OnEvent", secrets_Events)
