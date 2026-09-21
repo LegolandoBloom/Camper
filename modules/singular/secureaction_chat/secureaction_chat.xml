@@ -1,0 +1,17 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="secureaction_chat.lua"/>
+
+    <Button name="Camper_SendChatMsgSecureActionButton" parentKey="Camper_SendChatMsgSecureActionButton" mixin="Camper_SendChatMsgSecureActionButtonMixin" inherits="Legolando_SimpleSquareButtonTemplate_Camper, SecureActionButtonTemplate" hidden="false">
+        <Anchors>
+            <Anchor point="CENTER" x="-100" y="100"/>
+        </Anchors>
+        <Size x="64" y="64"/>
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+        </Scripts>
+    </Button>
+
+
+</Ui>

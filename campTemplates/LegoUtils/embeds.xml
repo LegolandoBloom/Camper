@@ -3,5 +3,6 @@
 
     <Include file="LegoUtil.lua"/>
     <Include file="LegoRectUtil.lua"/>
+    <Include file="LegoMap.lua"/>
 
 </Ui>

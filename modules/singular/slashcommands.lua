@@ -16,6 +16,19 @@ SLASH_CAMPERRESET1 = "/campres"
 SlashCmdList["CAMPERRESET"] = function()
     -- do something maybe
 end
+SLASH_CAMPERTEST1 = "/camptest"
+SlashCmdList["CAMPERTEST"] = function()
+	local currentMapID = C_Map.GetBestMapForUnit("player")
+	local mapInfo = C_Map.GetMapInfo(currentMapID)
+	DevTools_Dump(mapInfo)
+	local coords = C_Map.GetPlayerMapPosition(currentMapID, "player")
+	if not coords then return end
+	local x, y = coords:GetXY()
+	C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(currentMapID, x, y))
+	local hyperlink = C_Map.GetUserWaypointHyperlink()
+	SendChatMessage(hyperlink, "SAY", nil, nil)
+	C_Map.ClearUserWaypoint()
+end
 
 SLASH_CAMPERSETTINGS1 = "/camper"
 SLASH_CAMPERSETTINGS2 = "/campcamp"

@@ -6,4 +6,6 @@
     <Include file="singular\slashcommands.lua"/>
     <Include file="singular\minimap.lua"/>
     <Include file="singular\addonsTab.lua"/>
+    
+    <Include file="singular\secureaction_chat\secureaction_chat.xml"/>
 </Ui>

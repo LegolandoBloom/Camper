@@ -14,11 +14,15 @@ local colorDarkRed = CreateColor(0.68, 0, 0)
 local colorDarkBlu = CreateColor(0.12, 0.5, 1)
 
 
+T["Camper Configuration"] = "Camper Configuration"
+
 T["Left Click: Config Panel"] = "Left Click: " .. colorYello:WrapTextInColorCode("Config Panel")
 
 T["Camper: Minimap Icon hidden, /campmini to show."] = "Camper: Minimap Icon hidden, /campmini to show."
 
 T["Middle Button: Hide Minimap Icon"] = "Middle Button: " .. colorYello:WrapTextInColorCode("Hide Minimap Icon")
+
+T["Open Config Panel"] = "Open Config Panel"
 
 T["Left Click: Config Panel"] = "Left Click: " .. colorYello:WrapTextInColorCode("Config Panel")
 

@@ -30,9 +30,8 @@ campTemplates\embeds.xml
 debug.lua
 init.lua
 secrets\secrets.lua
+Camper.xml
 Camper.lua
 
 modules\embeds_all.xml
 modules\embeds_classic.xml
-
-Camper.xml
