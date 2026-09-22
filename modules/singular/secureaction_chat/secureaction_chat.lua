@@ -1,11 +1,12 @@
+local DEBUGGING = true
+
 local T = Camper_Translate
 
 local LU = LegolandoUtil
 local LM = LU.Map
 local LC = LU.Chat
 local LSec = LU.Secret
-
-
+local d = LU.Debug.CreateDebugHandler(DEBUGGING)
 
 Camper_SendChatMsgSecureActionButtonMixin = {}
 
@@ -18,7 +19,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:Init()
         return
     end
     local hideAfter = teeburu[reference]
-    DevTools_Dump(teeburu)
+    d.tableToString(teeburu)
     self.hideAfter = hideAfter
     initiated = true
 end
@@ -69,14 +70,14 @@ function Camper_SendChatMsgSecureActionButtonMixin.OnEvent(self, event, unit, ..
         if self:IsShown() then
             self:Hide()
             self:SetScript("OnUpdate", nil)
-            print("Hiding due to combat")
+            d.print("Hiding due to combat")
+            d.print("Hiding due to combat")
             if self.remainingDelay then
-                print("Still have delay leftover: ", self.remainingDelay)
+                d.print("Still have delay leftover: ", self.remainingDelay)
             end            
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
         -- combat ended. Activate any remainder macroText attribute
-
     end
 end
 
@@ -86,18 +87,15 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnShow()
     if not initiated then return end
     local delay = self.hideAfter
     local threshold = delay / THRESHOLD_DIVIDER
-    print("delay: ", delay)
-    DevTools_Dump(LU.SingleDelayer)
-    DevTools_Dump(LU.SimplifyFloat)
-    DevTools_Dump(LU.PoolDelayer)
-    -- LU.SingleDelayer(delay, 0, threshold, self, function(remainingDelay)
-    --     if remainingDelay > 0 then
-    --         self.remainingDelay = remainingDelay
-    --     end
-    -- end, function()
-    --     self.remainingDelay = nil
-    --     self:Hide()
-    -- end)
+    LU.SingleDelayer(delay, 0, threshold, self, function(remainingDelay)
+        if remainingDelay > 0 then
+            self.remainingDelay = remainingDelay
+            d.print("Delay remaining: ", remainingDelay)
+        end
+    end, function()
+        self.remainingDelay = nil
+        self:Hide()
+    end)
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnHide()

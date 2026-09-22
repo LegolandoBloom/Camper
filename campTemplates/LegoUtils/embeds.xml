@@ -7,5 +7,6 @@
     <Include file="LegoSecret.lua"/>
     <Include file="LegoSpell.lua"/>
     <Include file="LegoChat.lua"/>
+    <Include file="LegoDebug.lua"/>
 
 </Ui>

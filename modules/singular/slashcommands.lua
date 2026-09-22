@@ -2,6 +2,8 @@ local T = Camper_Translate
 local colorBlu = CreateColor(0.61, 0.85, 0.92)
 local colorYello = CreateColor(1.0, 0.82, 0.0)
 
+local LU = LegolandoUtil
+
 SLASH_CAMPERENUMERATEPOOL1 = "/campenum"
 SlashCmdList["CAMPERENUMERATEPOOL"] = function()
     for frame in camperDelayers:EnumerateActive() do
@@ -16,9 +18,12 @@ SLASH_CAMPERRESET1 = "/campres"
 SlashCmdList["CAMPERRESET"] = function()
     -- do something maybe
 end
+
+
 SLASH_CAMPERTEST1 = "/camptest"
 SlashCmdList["CAMPERTEST"] = function()
     print("|cffFF0000Hi|r")
+
 end
 
 SLASH_CAMPERSETTINGS1 = "/camper"
