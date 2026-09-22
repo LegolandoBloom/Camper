@@ -26,7 +26,7 @@ Camper_ReusableFrameAnchorableTooltip = CreateFrame("GameTooltip", "Camper_Reusa
 
 
 CamperConfig = {
-
+    
 }
 CamperCharacter = {
 
@@ -40,10 +40,14 @@ CamperUI = {
 
 }
 
+
+
 -- ____________________________________________________________________________________________
 
 function Init_CamperSavedVariables()
     if CamperConfig == nil then CamperConfig = {} end
+    if CamperConfig.hideSecureAfter == nil then CamperConfig.hideSecureAfter = 8 end
+
     if CamperCharacter == nil then CamperCharacter = {} end
     if CamperAudio == nil then CamperAudio = {} end
     if CamperUI == nil then CamperUI = {} end
@@ -55,6 +59,11 @@ function Init_CamperSavedVariables()
     if CamperMinimapButton.show == nil then
         CamperMinimapButton.show = true
     end
+
+    print(Camper_SendChatMsgSecureActionButton:GetDebugName())
+    Camper_SendChatMsgSecureActionButton.savedVarTable = CamperConfig
+    Camper_SendChatMsgSecureActionButton.reference = "hideSecureAfter"
+    Camper_SendChatMsgSecureActionButton:Init()
 end
 
 -- ___ temporary measure for the Forever Branch ___
@@ -248,6 +257,7 @@ function Camper_EventLoader(self, event, unit, ...)
     if event == "ADDON_LOADED" and unit == "Camper" then
         Init_CamperSavedVariables()
         camp.addonLoaded = true
+        print("Camper Loaded")
     elseif event == "PLAYER_ENTERING_WORLD" then
         -- return if zone change
         if unit == false and arg4 == false then return end

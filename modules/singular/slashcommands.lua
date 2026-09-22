@@ -18,7 +18,7 @@ SlashCmdList["CAMPERRESET"] = function()
 end
 SLASH_CAMPERTEST1 = "/camptest"
 SlashCmdList["CAMPERTEST"] = function()
-    DevTools_Dump({EnumerateServerChannels()})
+    print("|cffFF0000Hi|r")
 end
 
 SLASH_CAMPERSETTINGS1 = "/camper"

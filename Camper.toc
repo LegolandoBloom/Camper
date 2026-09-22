@@ -1,9 +1,9 @@
-## Interface: 16001
+## Interface: 16001, 120100
 ## Title: Camper
 ## Notes: I have set up camp here!
 ## Version: Camper @project-version@
 ## Author: LegolandoBloom
-## SavedVariables: CamperConfig, Camper_TinyOptions, CamperMinimapButton, CamperTutorial, CamperClassicConfig, CamperBobberScannerUI, CamperCharacter, Camper_SlottedExtraToys, Camper_SlottedExtraItems, Camper_SwapoutItemsSaved, Camper_CVars, CamperClassic_CVars, CamperAudio
+## SavedVariables: CamperConfig, CamperMinimapButton, CamperCharacter, CamperAudio
 ## IconTexture: Interface\AddOns\Camper\images\campericon.png
 ## X-Curse-Project-ID: 1703336
 
