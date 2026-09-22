@@ -23,6 +23,7 @@
         "GAME_LOCALE",
         "LE_EXPANSION_MIDNIGHT",
         "SAY",
-        "Camper_SendChatMsgSecureActionButton"
+        "Camper_SendChatMsgSecureActionButton",
+        "COMMUNITIES_DEFAULT_CHANNEL_NAME"
     ]
 }

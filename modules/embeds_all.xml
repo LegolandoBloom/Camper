@@ -8,4 +8,9 @@
     <Include file="singular\addonsTab.lua"/>
     
     <Include file="singular\secureaction_chat\secureaction_chat.xml"/>
+    <Include file="singular\secureaction_chat\actionHandler.lua"/>
+
+    
+    <Include file="singular\spellTracker.lua"/>
+    <Include file="singular\auraTracker.lua"/>
 </Ui>

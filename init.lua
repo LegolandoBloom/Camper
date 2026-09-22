@@ -10,6 +10,10 @@ local addonName, camp = ...
 camp.addonLoaded = false
 
 
+camp.pr = CreateFromMixins(CallbackRegistryMixin)
+camp.pr:OnLoad()
+camp.pr:SetUndefinedEventsAllowed(true)
+local pr = camp.pr
 
 camperDelayers = CreateFramePool("Frame", camperDelayers, nil, function(framePool, frame)
     frame:ClearAllPoints()

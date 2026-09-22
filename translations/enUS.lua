@@ -13,6 +13,9 @@ local colorUnderlight = CreateColor(0.9, 0.8, 0.5)
 local colorDarkRed = CreateColor(0.68, 0, 0)
 local colorDarkBlu = CreateColor(0.12, 0.5, 1)
 
+local colorCamper = CreateColor(0.76, 0.33, 0.03)
+print("loaded")
+
 
 T["Camper Configuration"] = "Camper Configuration"
 
@@ -37,5 +40,7 @@ T["You need to open the Config Panel to change Camper's settings!"
 .. "\n\n(Hint) You can also:\n - type /camper\n - Click the Minimap/AddonCompartment Button\nto open it."
 
 
-T["Camper: cannot open Config Panel in combat."] = "Camper: cannot open Config Panel in combat."
+T["Camper: cannot open Config Panel in combat."] = colorCamper:WrapTextInColorCode("Camper") .. ": cannot open Config Panel in combat."
 T["Please try again after combat ends."] = "Please try again after combat ends."
+
+T["[Camper]: I've set up camp here!"] = "[Camper]: I've set up camp here!"
