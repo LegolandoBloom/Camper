@@ -30,17 +30,16 @@ local function queryCampAuraFromSpellIDAndUpdateTracked()
     end
 end
 
-local testing = true
-local function spellTracker_Events(self, event, unit, ...)
+local function auraTracker_Events(self, event, unit, ...)
     if camp.addonLoaded == false then return end
     local arg4, arg5 = ...
-    if testing and event == "PLAYER_STOPPED_MOVING" then
-        
+    if CamperConfig.checkboxes.testerMode and event == "PLAYER_STOPPED_TURNING" then
+        pr:TriggerEvent("Camper_PlayerFoundCamp")
     elseif event == "UNIT_AURA" and not issecretvalue(unit) and unit == "player" then
         queryCampAuraFromSpellIDAndUpdateTracked()
     end
 end
 
-auraTrckerFrame:SetScript("OnEvent", spellTracker_Events)
-auraTrckerFrame:RegisterEvent("PLAYER_STOPPED_MOVING")
+auraTrckerFrame:SetScript("OnEvent", auraTracker_Events)
+auraTrckerFrame:RegisterEvent("PLAYER_STOPPED_TURNING")
 auraTrckerFrame:RegisterEvent("UNIT_AURA")

@@ -12,6 +12,10 @@ local LD = LegolandoUtil.Debug
 function LD.CreateDebugHandler(debugging)
     local debugHandler = {}
     debugHandler.debugging = debugging
+    function debugHandler.toggleDebug(enable)
+        debugHandler.debugging = enable
+    end
+
     function debugHandler.print(...)
         if not debugHandler.debugging then return end
         print(...)

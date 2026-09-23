@@ -1,12 +1,23 @@
-local DEBUGGING = true
-
-local T = Camper_Translate
-
 local LU = LegolandoUtil
 local LM = LU.Map
 local LC = LU.Chat
 local LSec = LU.Secret
+
+
+local DEBUGGING = false
 local d = LU.Debug.CreateDebugHandler(DEBUGGING)
+local addonName, camp = ...
+local pr = camp.pr
+pr:RegisterCallback("Camper_Settings_DebugEnabled", function(_, caller)
+    d.toggleDebug(true)
+end)
+pr:RegisterCallback("Camper_Settings_DebugDisabled", function(_, caller)
+    d.toggleDebug(false)
+end)
+
+
+local T = Camper_Translate
+
 
 Camper_SendChatMsgSecureActionButtonMixin = {}
 
@@ -61,6 +72,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:ClearAttributes()
 end
 
 local macroSoundEffectLine = "/script PlaySound(5274)"
+local macroCloseFrameLine = "/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
 
 local playerSetUpCampMessage = T["[Camper]: I've set up camp here!"]
 local testing = true
@@ -71,7 +83,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     if testing then generalChat_index = 1 end
-    local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine
+    local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerSetUpCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
@@ -87,7 +99,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     if testing then generalChat_index = 1 end
-    local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine
+    local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerFoundCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
@@ -105,7 +117,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:StartHideDelayer()
     self.hideTimer:SetText(hideTimerMessage .. delay)
     LU.SingleDelayer(delay, 0, THRESHOLD, self, function(remainingDelay)
         if remainingDelay > 0 then
-            d.print("Delay remaining: ", remainingDelay)
+            d.print("Delay remaining: ", LU.SimplifyFloat(remainingDelay, 0))
             self.hideTimer:SetText(hideTimerMessage .. LU.SimplifyFloat(remainingDelay, 0))
         end
     end, function()
@@ -180,7 +192,14 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnShow()
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnHide()
+    
+end
 
+function Camper_SendChatMsgSecureActionButtonMixin:MacroSuccessful()
+    d.print("MACRO SUCCESSFUL!", self:GetDebugName())
+    self:ResetDelayer()
+    self:ClearAttributes()
+    self:Hide()
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnDragStart(button)
@@ -193,3 +212,4 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnDragStop(button)
     self:StopMovingOrSizing()
     self.title:Show()
 end
+

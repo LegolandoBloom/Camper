@@ -46,7 +46,11 @@ CamperUI = {
 
 function Init_CamperSavedVariables()
     if CamperConfig == nil then CamperConfig = {} end
-    if CamperConfig.hideSecureAfter == nil then CamperConfig.hideSecureAfter = 8 end
+    if CamperConfig.checkboxes == nil then CamperConfig.checkboxes = {} end
+    if CamperConfig.checkboxes.debugMode == nil then CamperConfig.checkboxes.debugMode = false end
+    if CamperConfig.checkboxes.testerMode == nil then CamperConfig.checkboxes.testerMode = false end
+    if CamperConfig.editBoxes == nil then CamperConfig.editBoxes = {} end
+    if CamperConfig.editBoxes.hideAfter == nil then CamperConfig.editBoxes.hideAfter = 8 end
 
     if CamperCharacter == nil then CamperCharacter = {} end
     if CamperAudio == nil then CamperAudio = {} end
@@ -98,15 +102,15 @@ function Camper_SingleDelayer(delay, timeElapsed, elapsedThreshhold, delayFrame,
     delayFrame:SetScript("OnUpdate", function(self, elapsed)
         timeElapsed = timeElapsed + elapsed
         if timeElapsed > elapsedThreshhold then
+            delay = delay - timeElapsed
+            timeElapsed = 0
             if cycleFunk then
-                if cycleFunk() == true then
+                if cycleFunk(delay) == true then
                     -- If cycleFunk returns true the delayer is stopped, and the script set to nil. endFunk is not executed..
                     self:SetScript("OnUpdate", nil)
                     return
                 end
             end
-            delay = delay - timeElapsed
-            timeElapsed = 0
         end
         
         if delay <= 0 then
@@ -257,7 +261,7 @@ function Camper_EventLoader(self, event, unit, ...)
     if event == "ADDON_LOADED" and unit == "Camper" then
         Init_CamperSavedVariables()
         camp.addonLoaded = true
-        print("Camper Loaded")
+        Camper_SetupConfigPanel()
     elseif event == "PLAYER_ENTERING_WORLD" then
         -- return if zone change
         if unit == false and arg4 == false then return end

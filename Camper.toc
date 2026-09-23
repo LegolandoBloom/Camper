@@ -33,5 +33,7 @@ secrets\secrets.lua
 Camper.xml
 Camper.lua
 
+ui.lua
+
 modules\embeds_all.xml
 modules\embeds_classic.xml

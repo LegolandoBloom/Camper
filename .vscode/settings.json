@@ -24,6 +24,7 @@
         "LE_EXPANSION_MIDNIGHT",
         "SAY",
         "Camper_SendChatMsgSecureActionButton",
-        "COMMUNITIES_DEFAULT_CHANNEL_NAME"
+        "COMMUNITIES_DEFAULT_CHANNEL_NAME",
+        "Camper_SetupConfigPanel"
     ]
 }

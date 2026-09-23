@@ -53,3 +53,5 @@ T["Click to send to General Chat: "] = "Click " .. colorWhite:WrapTextInColorCod
 T["Announce Camp!"] = "Announce Camp!"
 
 T["Hiding in: "] = "Hiding in: "
+T["Hide After:"] = "Hide After:"
+T["seconds"] = "seconds"

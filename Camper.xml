@@ -7,7 +7,7 @@
         </Scripts>
         <Frames>
             <Frame name="$parent_ConfigPanel" parentKey="configPanel" toplevel="true" clampedToScreen="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" hidden="true">
-                <Size x="300" y="200"/>
+                <Size x="200" y="180"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
@@ -37,6 +37,49 @@
                         </Texture>
                     </Layer>
                 </Layers>
+                <Frames>
+                    <Frame name="$parent_Checkboxes" parentKey="checkboxes" inherits="Legolando_CheckboxesTemplate_Camper">
+                        <Size x="1" y="1"/>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="10" y="-35"/>
+                        </Anchors>
+                        <Frames>
+                            <Frame parentKey="debugMode" inherits="Legolando_CheckboxFrameTemplate_Camper">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="10" y="-5"/>
+                                </Anchors>
+                            </Frame>
+                            <Frame parentKey="testerMode" inherits="Legolando_CheckboxFrameTemplate_Camper">
+                                <Size x="26" y="26"/>
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="10" y="-30"/>
+                                </Anchors>
+                            </Frame>
+                        </Frames>
+                    </Frame>
+                    <EditBox name="Camper_HideAfterEditBox" parentKey="hideAfter" letters="3" scale="1.2" inherits="Legolando_NumericInputBoxWithForceNegativeTempate_Camper">
+                        <Size x="38" y="25"/>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="25" y="-90"/>
+                        </Anchors>
+                        <Layers>
+                            <Layer level="ARTWORK">
+                                <FontString name="$parent_UnitTextTop" parentKey="unitTextTop" inherits="GameFontNormalSmall">
+                                    <Anchors>
+                                        <Anchor point="BOTTOM" relativeKey="$parent" relativePoint="TOP" x="0" y="0"/>
+                                    </Anchors>
+                                </FontString>
+                                <FontString name="$parent_UnitTextBottom" parentKey="unitTextBottom" inherits="GameFontNormalSmall">
+                                    <Anchors>
+                                        <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="-2" y="0"/>
+                                    </Anchors>
+                                </FontString>
+                            </Layer>
+                        </Layers>
+                  
+                    </EditBox>
+                </Frames>
             </Frame>
         </Frames>
     </Frame>
