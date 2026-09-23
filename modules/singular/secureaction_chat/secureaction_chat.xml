@@ -31,9 +31,11 @@
                 </Anchors>
                 <Size x="20" y="20"/>
                 <Scripts>
-                    
                     <OnClick>
-                        self:GetParent():Hide()
+                        local parent = self:GetParent()
+                        parent:ResetDelayer()
+                        parent:ClearAttributes()
+                        parent:Hide()
                     </OnClick>
                 </Scripts>
             </Button>

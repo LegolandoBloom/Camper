@@ -48,6 +48,11 @@ function Camper_SendChatMsgSecureActionButtonMixin:ActivateAttributes()
     self:SetAttribute("macrotext", self.macroText)
     self.macroText = nil
 end
+function Camper_SendChatMsgSecureActionButtonMixin:ClearAttributes()
+    if not initiated then return end
+    if not initiated then return end
+    self:SetAttribute("macrotext", "")
+end
 
 local playerCampMessage = T["[Camper]: I've set up camp here!"]
 local testing = true
@@ -61,50 +66,56 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     self.macroText = macroText
     if not InCombatLockdown() then
         self:ActivateAttributes()
+        self:ResetDelayer()
         self:Show()
     end
 end
 
 
 -- _____________________________ Hide Delayer _____________________________
+function Camper_SendChatMsgSecureActionButtonMixin:ResetDelayer()
+    self:SetScript("OnUpdate", nil)
+end
+
 local THRESHOLD_DIVIDER = 5
 function Camper_SendChatMsgSecureActionButtonMixin:StartHideDelayer()
     local delay = self.hideAfter
     local threshold = delay / THRESHOLD_DIVIDER
     LU.SingleDelayer(delay, 0, threshold, self, function(remainingDelay)
         if remainingDelay > 0 then
-            self.remainingDelay = remainingDelay
             d.print("Delay remaining: ", remainingDelay)
         end
     end, function()
         d.print("Delay ended. Hiding Frame.")
-        self.remainingDelay = nil
+        self:ClearAttributes()
         self:Hide()
     end)
 end
-function Camper_SendChatMsgSecureActionButtonMixin:PauseHideDelayer()
-    self:SetScript("OnUpdate", nil)
-    if self.remainingDelay then
-        d.print("Still have delay leftover: ", self.remainingDelay)
-    end      
-end
-function Camper_SendChatMsgSecureActionButtonMixin:ContinueHideDelayer()
-    if not self.remainingDelay then return end
-    self:Show()
-    d.print("Continuing delay where left off", self.remainingDelay)
-    local delay = self.remainingDelay
-    local threshold = delay / THRESHOLD_DIVIDER
-    LU.SingleDelayer(delay, 0, threshold, self, function(remainingDelay)
-        if remainingDelay > 0 then
-            self.remainingDelay = remainingDelay
-            d.print("(Continue) Delay remaining: ", remainingDelay)
-        end
-    end, function()
-        d.print("(Continue) Delay ended. Hiding Frame.")
-        self.remainingDelay = nil
-        self:Hide()
-    end)
-end
+-- ___MAYBE NOT NEEDED__
+-- function Camper_SendChatMsgSecureActionButtonMixin:PauseHideDelayer()
+--     self:SetScript("OnUpdate", nil)
+--     if self.remainingDelay then
+--         d.print("Still have delay leftover: ", self.remainingDelay)
+--     end      
+-- end
+-- function Camper_SendChatMsgSecureActionButtonMixin:ContinueHideDelayer()
+--     if not self.remainingDelay then return end
+--     self:Show()
+--     d.print("Continuing delay where left off", self.remainingDelay)
+--     local delay = self.remainingDelay
+--     local threshold = delay / THRESHOLD_DIVIDER
+--     LU.SingleDelayer(delay, 0, threshold, self, function(remainingDelay)
+--         if remainingDelay > 0 then
+--             self.remainingDelay = remainingDelay
+--             d.print("(Continue) Delay remaining: ", remainingDelay)
+--         end
+--     end, function()
+--         d.print("(Continue) Delay ended. Hiding Frame.")
+--         self.remainingDelay = nil
+--         self:Hide()
+--     end)
+-- end
+-- _____________________
 -- ________________________________________________________________________
 
 
@@ -113,13 +124,18 @@ function Camper_SendChatMsgSecureActionButtonMixin.OnEvent(self, event, unit, ..
     local arg4, arg5 = ...
     event, unit, arg4, arg5 = LSec.ScrubSecret(event, unit, arg4, arg5)
     if event == "PLAYER_REGEN_DISABLED" then
+        -- Button activated --> player entered combat while active
         if self:IsShown() then
             self:Hide()
             d.print("Hiding due to combat")
-            self:PauseHideDelayer()
+            -- self:PauseHideDelayer()
+        -- Player entered combat --> Button tried to activate but failed due to being in combat
+        else
+            self:ActivateAttributes()
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
-        self:ContinueHideDelayer()
+        -- self:ContinueHideDelayer()
+        self:Show()
     end
 end
 
@@ -131,8 +147,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnShow()
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnHide()
-    if not initiated then return end
-    self:SetAttribute("macrotext", "")
+
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnDragStart(button)
