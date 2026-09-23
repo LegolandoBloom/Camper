@@ -64,7 +64,6 @@ function Init_CamperSavedVariables()
         CamperMinimapButton.show = true
     end
 
-    print(Camper_SendChatMsgSecureActionButton:GetDebugName())
     Camper_SendChatMsgSecureActionButton.savedVarTable = CamperConfig.editBoxes
     Camper_SendChatMsgSecureActionButton.reference = "hideAfter"
     Camper_SendChatMsgSecureActionButton:Init()
@@ -241,13 +240,13 @@ local function _load_mists()
     if camp.gameVersion ~= 2 then return end
 end
 
+-- Commented for now
+-- Camper_TempCVars = {
 
-Camper_TempCVars = {
-
-}
-Camper_TempCVarHandler = CreateFrame("Frame", "Camper_CVarHandler", UIParent, "Legolando_TempCVarHandlerTemplate_Camper")
-Camper_TempCVarHandler.tempCVarsTable = Camper_TempCVars
-Camper_TempCVarHandler:Init()
+-- }
+-- Camper_TempCVarHandler = CreateFrame("Frame", "Camper_CVarHandler", UIParent, "Legolando_TempCVarHandlerTemplate_Camper")
+-- Camper_TempCVarHandler.tempCVarsTable = Camper_TempCVars
+-- Camper_TempCVarHandler:Init()
 
 local function _cvars_load()
 

@@ -23,11 +23,11 @@ end
 SLASH_CAMPERTEST1 = "/camptest"
 SlashCmdList["CAMPERTEST"] = function()
     print("|cffFF0000Hi|r")
-
 end
 
 SLASH_CAMPERSETTINGS1 = "/camper"
 SLASH_CAMPERSETTINGS2 = "/campcamp"
+SLASH_CAMPERSETTINGS2 = "/cmpr"
 SlashCmdList["CAMPERSETTINGS"] = function() 
     if InCombatLockdown() then
         print(T["Camper: cannot open Config Panel in combat."])

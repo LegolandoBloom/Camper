@@ -8,7 +8,6 @@ LegolandoUtil.currentVersion = version
 
 local LU = LegolandoUtil
 
-print("WHAT THE HELL")
 function LU.SingleDelayer(delay, timeElapsed, elapsedThreshhold, delayFrame, cycleFunk, endFunk)
     delayFrame:SetScript("OnUpdate", function(self, elapsed)
         timeElapsed = timeElapsed + elapsed
