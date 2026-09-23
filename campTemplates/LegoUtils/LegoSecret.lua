@@ -23,13 +23,13 @@ end
 
 local VERSION_RETAIL = 1
 local VERSION_FOREVER = 4
-function LSec:IsSecret(value)
+function LSec.IsSecret(value)
     if gameVersion == VERSION_RETAIL or gameVersion == VERSION_FOREVER then
         if issecretvalue(value) then return true end
     end
     return false
 end
-function LSec:ScrubSecret(...)
+function LSec.ScrubSecret(...)
     if gameVersion == VERSION_RETAIL or gameVersion == VERSION_FOREVER then
         return scrubsecretvalues(...)
     end

@@ -79,10 +79,10 @@ local function secrets_Events(self, event, unit, ...)
         end
         local isRestricted, restrictedTypeTable = Camper_IsAddonSecretRestrictedForTypes("Combat", "Encounter", "ChallengeModes", "PvPMatch", "Map")
         if isRestricted == true then
-            Camper_BetaPrint(debugChannel, colorDebug:WrapTextInColorCode("Secrets:") .. " I am restricted by:")
-            Camper_BetaDump(debugChannel, restrictedTypeTable)
+            -- Camper_BetaPrint(debugChannel, colorDebug:WrapTextInColorCode("Secrets:") .. " I am restricted by:")
+            -- Camper_BetaDump(debugChannel, restrictedTypeTable)
         else
-            Camper_BetaPrint(debugChannel, colorDebug:WrapTextInColorCode("Secrets:") .. " I am not restricted")
+            -- Camper_BetaPrint(debugChannel, colorDebug:WrapTextInColorCode("Secrets:") .. " I am not restricted")
         end
     end
 end
