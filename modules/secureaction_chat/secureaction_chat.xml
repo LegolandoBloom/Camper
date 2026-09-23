@@ -3,7 +3,7 @@
 
     <Script file="secureaction_chat.lua"/>
 
-    <Button name="Camper_SendChatMsgSecureActionButton" parentKey="Camper_SendChatMsgSecureActionButton" mixin="Camper_SendChatMsgSecureActionButtonMixin" inherits="Legolando_SimpleSquareButtonTemplate_Camper, SecureActionButtonTemplate" hidden="false">
+    <Button name="Camper_SendChatMsgSecureActionButton" parentKey="Camper_SendChatMsgSecureActionButton" mixin="Camper_SendChatMsgSecureActionButtonMixin" inherits="Legolando_SimpleSquareButtonTemplate_Camper, SecureActionButtonTemplate" hidden="true">
         <Anchors>
             <Anchor point="CENTER" x="-100" y="100"/>
         </Anchors>

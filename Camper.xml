@@ -30,9 +30,10 @@
                 </Scripts>
                 <Layers>
                     <Layer level="OVERLAY">
-                        <Texture name="$parent_Decoration" parentKey="decoration" alpha="0.5">
+                        <Texture name="$parent_Decoration" parentKey="decoration" file="Interface/AddOns/Camper/images/campericon.png" alpha="0.5">
+                            <Size x="60" y="60"/>
                             <Anchors>
-                                <Anchor point="CENTER" x="8" y="13"/>
+                                <Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
                             </Anchors>
                         </Texture>
                     </Layer>
