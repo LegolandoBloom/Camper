@@ -29,11 +29,10 @@ function Camper_SendChatMsgSecureActionButtonMixin:Init()
         print("no saved variable or reference")
         return
     end
-    local hideAfter = teeburu[reference]
+    -- no need to save teeburu[reference] as a value, we'll need it to be dynamic
     d.tableToString(teeburu)
-    self.hideAfter = hideAfter
-    initiated = true
 
+    initiated = true
     self.tooltipTitle = T["Click to send to General Chat: "]
 end
 
@@ -113,7 +112,9 @@ local hideTimerMessage = T["Hiding in: "]
 local THRESHOLD_DIVIDER = 5
 local THRESHOLD = 1
 function Camper_SendChatMsgSecureActionButtonMixin:StartHideDelayer()
-    local delay = self.hideAfter
+    local teeburu = self.savedVarTable
+    local reference = self.reference
+    local delay = teeburu[reference]
     self.delayerActive = true
     self.hideTimer:SetText(hideTimerMessage .. delay)
     LU.SingleDelayer(delay, 0, THRESHOLD, self, function(remainingDelay)

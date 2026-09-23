@@ -65,8 +65,8 @@ function Init_CamperSavedVariables()
     end
 
     print(Camper_SendChatMsgSecureActionButton:GetDebugName())
-    Camper_SendChatMsgSecureActionButton.savedVarTable = CamperConfig
-    Camper_SendChatMsgSecureActionButton.reference = "hideSecureAfter"
+    Camper_SendChatMsgSecureActionButton.savedVarTable = CamperConfig.editBoxes
+    Camper_SendChatMsgSecureActionButton.reference = "hideAfter"
     Camper_SendChatMsgSecureActionButton:Init()
 end
 
