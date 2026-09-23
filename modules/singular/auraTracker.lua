@@ -10,7 +10,7 @@ local pr = camp.pr
 local auraTrckerFrame = CreateFrame("Frame")
 
 local CAMPAURA_SPELLID = 1283391 -- "Campfire Nearby"
-CAMPAURA_SPELLID = 20580 -- Shadowmeld (for testing)
+-- CAMPAURA_SPELLID = 20580 -- Shadowmeld (for testing)
 
 local trackedInstanceIDs = {
 
@@ -26,7 +26,6 @@ local function queryCampAuraFromSpellIDAndUpdateTracked()
     if trackedInstanceIDs[CAMPAURA_SPELLID] == nil or trackedInstanceIDs[CAMPAURA_SPELLID] ~= campAuraInstanceID then
         trackedInstanceIDs[CAMPAURA_SPELLID] = campAuraInstanceID
         pr:TriggerEvent("Camper_PlayerFoundCamp")
-        print("Have I though")
     end
 end
 
