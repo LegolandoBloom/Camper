@@ -4,5 +4,3 @@ end
 
 local T = Camper_Translate
 
-
-T["Camper Configuration"] = "Camper Configuration"

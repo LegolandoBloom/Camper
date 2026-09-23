@@ -14,16 +14,40 @@
             <OnHide method="OnHide"/>
             <OnEnter>
                 self.closeButton:Show()
+                local tooltipText = self.tooltipText
+                if not tooltipText then return end
+                local tooltipTitle = self.tooltipTitle
+                if not tooltipTitle then tooltipTitle = " " end
+                GameTooltip:SetOwner(self, "ANCHOR_LEFT", 0, -67)
+                GameTooltip:AddLine(tooltipTitle)
+                GameTooltip:AddLine("\n")
+                GameTooltip:AddLine(tooltipText, 1, 1, 1, false)
+                GameTooltip:Show()
             </OnEnter>
             <OnLeave>
                 if not self.closeButton:IsMouseOver() then
                     self.closeButton:Hide()
                 end
+                GameTooltip:Hide()
             </OnLeave>
             <OnDragStart method="OnDragStart"/>
             <OnDragStop method="OnDragStop"/>
             <OnEvent method="OnEvent"/>
         </Scripts>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_Title" parentKey="title"  inherits="GameFontNormal" hidden="false">
+                    <Anchors>
+                        <Anchor point="BOTTOM" relativeKey="$parent" relativePoint="TOP" x="0" y="5"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parent_HideTimer" parentKey="hideTimer" inherits="NumberFont_Shadow_Small" hidden="false">
+                    <Anchors>
+                        <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
         <Frames>
             <Button name="$parent_CloseButton" parentKey = "closeButton" inherits="UIPanelCloseButton" hidden="true">
                 <Anchors>

@@ -9,7 +9,6 @@ local pr = camp.pr
 
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
     secureButton:SetToPlayerSetupCamp()
-    print("yohohoho")
 end)
 
 pr:RegisterCallback("Camper_FoundCampAura", function(ownerID)
