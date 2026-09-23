@@ -10,6 +10,25 @@ local pr = camp.pr
 local auraTrckerFrame = CreateFrame("Frame")
 
 local CAMPAURA_SPELLID = 1283391 -- "Campfire Nearby"
+CAMPAURA_SPELLID = 20580 -- Shadowmeld (for testing)
+
+local trackedInstanceIDs = {
+
+}
+
+local function queryCampAuraFromSpellIDAndUpdateTracked()
+    local auraData = LSpell:GetNonSecretActiveAuraDataFromSpell(CAMPAURA_SPELLID)
+    if not auraData then 
+        trackedInstanceIDs[CAMPAURA_SPELLID] = nil
+        return
+    end
+    local campAuraInstanceID = auraData.auraInstanceID
+    if trackedInstanceIDs[CAMPAURA_SPELLID] == nil or trackedInstanceIDs[CAMPAURA_SPELLID] ~= campAuraInstanceID then
+        trackedInstanceIDs[CAMPAURA_SPELLID] = campAuraInstanceID
+        pr:TriggerEvent("Camper_PlayerFoundCamp")
+        print("Have I though")
+    end
+end
 
 local testing = true
 local function spellTracker_Events(self, event, unit, ...)
@@ -18,11 +37,7 @@ local function spellTracker_Events(self, event, unit, ...)
     if testing and event == "PLAYER_STOPPED_MOVING" then
         
     elseif event == "UNIT_AURA" and not issecretvalue(unit) and unit == "player" then
-        local auraData = LSpell:GetNonSecretActiveAuraDataFromSpell(CAMPAURA_SPELLID)
-        -- DevTools_Dump(auraData)
-        if auraData then
-            pr:TriggerEvent("Camper_PlayerFoundCamp")
-        end
+        queryCampAuraFromSpellIDAndUpdateTracked()
     end
 end
 

@@ -56,12 +56,13 @@ function Camper_SendChatMsgSecureActionButtonMixin:ActivateWithAttributes()
 end
 function Camper_SendChatMsgSecureActionButtonMixin:ClearAttributes()
     if not initiated then return end
-    if not initiated then return end
     self:SetAttribute("macrotext", "")
     self.tooltipText = nil
 end
 
-local playerCampMessage = T["[Camper]: I've set up camp here!"]
+local macroSoundEffectLine = "/script PlaySound(5274)"
+
+local playerSetUpCampMessage = T["[Camper]: I've set up camp here!"]
 local testing = true
 function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     d.print("SetToPlayerSetupCamp called")
@@ -70,9 +71,25 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     if testing then generalChat_index = 1 end
-    local macroText = "/c " .. generalChat_index .. " " ..  playerCampMessage .. " " .. hyperlink
+    local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine
     self.macroTextBuffer = macroText
-    self.tooltipTextBuffer = playerCampMessage .. " " .. hyperlink
+    self.tooltipTextBuffer = playerSetUpCampMessage .. " " .. hyperlink
+    if not InCombatLockdown() then
+        self:ActivateWithAttributes()
+    end
+end
+
+local playerFoundCampMessage = T["[Camper]: I found a camp here!"]
+function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
+    d.print("SetToPlayerFoundCamp called")
+    if not initiated then return end
+    local hyperlink = LM:GetCurrentPositionWaypointLink()
+    if not hyperlink then return end
+    local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
+    if testing then generalChat_index = 1 end
+    local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine
+    self.macroTextBuffer = macroText
+    self.tooltipTextBuffer = playerFoundCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
         self:ActivateWithAttributes()
     end
@@ -95,10 +112,18 @@ function Camper_SendChatMsgSecureActionButtonMixin:StartHideDelayer()
         d.print("Delay ended. Hiding Frame.")
         self:ClearAttributes()
         self:Hide()
-        self.delayerActive = false
-        self.hideTimer:SetText(nil)
+        self:ResetDelayer()
     end)
 end
+
+function Camper_SendChatMsgSecureActionButtonMixin:ResetDelayer()
+    self.delayerActive = false
+    self.hideTimer:SetText(nil)
+    self:SetScript("OnUpdate", nil)
+end
+
+
+
 -- ___MAYBE NOT NEEDED__
 -- function Camper_SendChatMsgSecureActionButtonMixin:PauseHideDelayer()
 --     self:SetScript("OnUpdate", nil)

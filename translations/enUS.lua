@@ -44,6 +44,7 @@ T["Camper: cannot open Config Panel in combat."] = colorCamper:WrapTextInColorCo
 T["Please try again after combat ends."] = "Please try again after combat ends."
 
 T["[Camper]: I've set up camp here!"] = "[Camper]: I've set up camp here!"
+T["[Camper]: I found a camp here!"] = "[Camper]: I found a camp here!"
 
 
 

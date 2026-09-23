@@ -28,7 +28,7 @@ local campSpellTable = {
     1307237,
 }
 
-local testing = true
+local testing = false
 local function spellTracker_Events(self, event, unit, ...)
     if camp.addonLoaded == false then return end
     local arg4, arg5 = ...

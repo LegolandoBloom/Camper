@@ -7,7 +7,7 @@
     <Include file="singular\minimap.lua"/>
     <Include file="singular\addonsTab.lua"/>
     
-    <Include file="singular\secureaction_chat\secureaction_chat.xml"/>
+    <Include file="secureaction_chat\secureaction_chat.xml"/>
 
     <Include file="singular\actionHandler.lua"/>
     
