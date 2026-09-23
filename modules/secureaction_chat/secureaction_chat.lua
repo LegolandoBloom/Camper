@@ -82,8 +82,8 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     local hyperlink = LM:GetCurrentPositionWaypointLink()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
-    if testing then generalChat_index = 1 end
     local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
+    if CamperConfig.checkboxes.testerMode then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerSetUpCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
@@ -100,6 +100,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     if testing then generalChat_index = 1 end
     local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
+    if CamperConfig.checkboxes.testerMode then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerFoundCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then

@@ -21,9 +21,10 @@ local function setup_Checkboxes()
 
     configPanel.checkboxes.testerMode.text:SetText("Tester Mode")
     configPanel.checkboxes.testerMode.tooltip = colorRed:WrapTextInColorCode("ONLY MEANT FOR TESTING PURPOSES.\n\n") 
-    .. colorGrae:WrapTextInColorCode("When checked:\n"
-                                    .. "treats \'Player Stopped Moving\' as --> \'Player Set Up A Campsite\'"
-                                    .. "and \'Player Stopped Turning\' as --> \'Player Found A Campsite\'")
+    .. colorGrae:WrapTextInColorCode("When checked:\n\n"
+                                    .. "- treat \'Player Stopped Moving\' as --> \'Player Set Up A Campsite\'\n\n"
+                                    .. "- treat \'Player Stopped Turning\' as --> \'Player Found A Campsite\'\n\n"
+                                    .. "- message and waypoint will be sent to /say instead of General Chat")
     configPanel.checkboxes.testerMode.onClickCallback = function(configPanel, isChecked) 
         if isChecked == true then
             pr:TriggerEvent("Camper_Settings_DebugEnabled")
