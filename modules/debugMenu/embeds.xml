@@ -2,8 +2,8 @@
 ..\FrameXML\UI.xsd">
 
     <!-- <Include file="singular\something.lua"/> -->
-    
+    <Include file="d_init.lua"/>
     <Include file="debugMenu.xml"/>
-    <Include file="init.lua"/>
-    <Include file="ui.lua"/>
+    <Include file="actionSimulator/actionSimulator.xml"/>
+    <Include file="d_ui.lua"/>
 </Ui>

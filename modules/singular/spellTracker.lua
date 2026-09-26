@@ -28,12 +28,26 @@ local campSpellTable = {
     1307237,
 }
 
+local testSpellTable = {
+    -- Shadowmeld
+    20580,
+    -- Stealth
+    1784
+}
+
+local function _handleSpellTester(spellID)
+    if not CamperDebug.checkboxes.spellTester then return end 
+    if not CheckTable(testSpellTable, spellID) then return end
+    pr:TriggerEvent("Camper_PlayerSetCamp")
+end
+
 local function spellTracker_Events(self, event, unit, ...)
     if camp.addonLoaded == false then return end
     local arg4, arg5 = ...
-    if CamperConfig.checkboxes.spellTester and event == "PLAYER_STOPPED_MOVING" then
-        pr:TriggerEvent("Camper_PlayerSetCamp")
-    elseif event == "UNIT_SPELLCAST_SUCCEEDED" and not issecretvalue(unit) and unit == "player" then
+    if event == "UNIT_SPELLCAST_SUCCEEDED" and not issecretvalue(unit) and unit == "player" then
+        -- ____________________________ Spell Tester _____________________________
+        _handleSpellTester(arg5)
+        -- _______________________________________________________________________
         if not CheckTable(campSpellTable, arg5) then return end
         pr:TriggerEvent("Camper_PlayerSetCamp")
     end

@@ -1,0 +1,64 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="actionSimulator.lua"/>
+
+    <Frame name="Camper_ActionSimulator" parent="Camper_DebugMenu" parentKey="actionSimulator" mixin="Camper_ActionSimulatorMixin" hidden="true">
+        <Size x="1" y="1"/>
+        <Anchors>
+            <Anchor point="TOPLEFT" x="20" y="-120"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+        </Scripts>
+        <Frames>
+            <Button name="$parent_SetupCamp" parentKey="setupCamp" inherits="Legolando_SimpleSquareButtonTemplate_Camper">
+                <Size x="96" y="96"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="0"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parent_Title" parentKey="title" text="Set Up Camp" inherits="GameFontNormalSmall">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>  
+            </Button>
+            <Button name="$parent_FoundCamp" parentKey="foundCamp" inherits="Legolando_SimpleSquareButtonTemplate_Camper">
+                <Size x="96" y="96"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="100"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parent_Title" parentKey="title" text="Entered Camp Aura" inherits="GameFontNormalSmall">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>  
+            </Button>
+            <Button name="$parent_UnfoundCamp" parentKey="unfoundCamp" inherits="Legolando_SimpleSquareButtonTemplate_Camper">
+                <Size x="96" y="96"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="200"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parent_Title" parentKey="title" text="Left Camp Aura" inherits="GameFontNormalSmall">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>  
+            </Button>
+        </Frames>
+    </Frame>
+
+
+</Ui>

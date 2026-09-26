@@ -26,6 +26,7 @@
         "Camper_SendChatMsgSecureActionButton",
         "COMMUNITIES_DEFAULT_CHANNEL_NAME",
         "Camper_SetupConfigPanel",
-        "Camper_DebugMenu"
+        "Camper_DebugMenu",
+        "CamperDebug"
     ]
 }

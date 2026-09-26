@@ -3,7 +3,7 @@
 ## Notes: I have set up camp here!
 ## Version: Camper @project-version@
 ## Author: LegolandoBloom
-## SavedVariables: CamperConfig, CamperMinimapButton, CamperCharacter, CamperAudio
+## SavedVariables: CamperConfig, CamperMinimapButton, CamperCharacter, CamperAudio, CamperDebug
 ## IconTexture: Interface\AddOns\Camper\images\campericon.png
 ## X-Curse-Project-ID: 1703336
 

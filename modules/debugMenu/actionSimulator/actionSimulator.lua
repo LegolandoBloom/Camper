@@ -1,19 +1,14 @@
+
+
 local addonName, camp = ...
 local secureButton = Camper_SendChatMsgSecureActionButton
 
 local pr = camp.pr
 
 
-Camper_DebugMenuMixin = {}
+Camper_ActionSimulatorMixin = {}
 
-
-
-function Camper_DebugMenuMixin:OnLoad()
-    tinsert(UISpecialFrames, self:GetName())
-    self.TitleText:SetText("Camper Debug Menu(ONLY FOR TESTING)")
-    self:SetMovable(true)
-    self:RegisterForDrag("LeftButton")
-    
+function Camper_ActionSimulatorMixin:OnLoad()
     self.setupCamp.icon:SetTexture("Interface/Addons/Camper/images/debug/setupcamp.png")
     self.setupCamp.icon:SetSize(64, 64)
     self.setupCamp:SetScript("OnClick", function()
