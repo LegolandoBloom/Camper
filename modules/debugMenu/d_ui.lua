@@ -1,5 +1,6 @@
 local colorRed = CreateColor(1, 0, 0)
 local colorGrae = CreateColor(0.85, 0.85, 0.85)
+local colorYello = CreateColor(1.0, 0.82, 0.0)
 
 local debugMenu = Camper_DebugMenu
 
@@ -18,9 +19,9 @@ local function _setupCheckboxes(checkboxesFrame)
     end
     
     checkboxesFrame.spellTester.text:SetText("Spell Tester")
-    checkboxesFrame.spellTester.tooltip = colorRed:WrapTextInColorCode("ONLY MEANT FOR TESTING PURPOSES.\n\n") 
-    .. colorGrae:WrapTextInColorCode("When checked:\n\n"
-    .. "- treat certain list of spells as the camp spell")
+    checkboxesFrame.spellTester.tooltip = colorYello:WrapTextInColorCode("When checked:\n")
+    .. "- Treats a certain list of spells as the \'Camp Spell\'"
+    .. colorGrae:WrapTextInColorCode("\n\n If enabled: Waypoint messages will be sent to /say instead of general chat.")
     checkboxesFrame.spellTester.onClickCallback = function(configPanel, isChecked) 
         if isChecked == true then
             
@@ -30,8 +31,9 @@ local function _setupCheckboxes(checkboxesFrame)
     end
     
     checkboxesFrame.simulationEnabled.text:SetText("Action Simulation")
-    checkboxesFrame.simulationEnabled.tooltip = colorRed:WrapTextInColorCode("Allows you to trigger: "
-    .. "\n-Player Setup Camp" .. "\n-Player Entered Camp Range" .. "\n-Player Left Camp Range")
+    checkboxesFrame.simulationEnabled.tooltip = colorYello:WrapTextInColorCode("Allows you to trigger: ")
+    .. colorYello:WrapTextInColorCode("\n- ") .. "Player Setup Camp" .. colorYello:WrapTextInColorCode("\n- ") .. "Player Entered Camp Range" .. colorYello:WrapTextInColorCode("\n- ") .. "Player Left Camp Range"
+    .. colorGrae:WrapTextInColorCode("\n\n If enabled: Waypoint messages will be sent to /say instead of general chat.")
     checkboxesFrame.simulationEnabled.onClickCallback = function(configPanel, isChecked) 
         if isChecked == true then
             Camper_DebugMenu.actionSimulator:Show()
