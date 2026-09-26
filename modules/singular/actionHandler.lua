@@ -19,17 +19,28 @@ local AFTERSPELL_FOUNDAURA_DELAYER = 15
 
 local delayFrame = CreateFrame("Frame")
 local foundDelayActive = false
+local waitingForSitDown = false
 
 
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
     secureButton:SetToPlayerSetupCamp()
     foundDelayActive = true
+    if waitingForSitDown then secureButton:CancelWaitForSitDown() end
+    waitingForSitDown = false
     Camper_SingleDelayer(AFTERSPELL_FOUNDAURA_DELAYER, 0, 1, delayFrame, function(remainingDelay)
         d.print("actionHandler: PlayerSetCamp delay active:", LU.SimplifyFloat(remainingDelay, 0))
     end, function()
-        
         foundDelayActive = false
     end)
+end)
+
+
+-- __________________________________________________________________ Found Camp __________________________________________________________________
+pr:RegisterCallback("Camper_PlayerNOTFoundCamp", function(ownerID)
+    if not waitingForSitDown then return end
+    d.print("Camper_PlayerNOTFoundCamp")
+    waitingForSitDown = false
+    secureButton:CancelWaitForSitDown()
 end)
 
 pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
@@ -37,8 +48,18 @@ pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
     -- The Campfire Aura's instanceID will still have been saved in auraTracker, so it won't unnecessarily trigger even after the 15 seconds passes
     if foundDelayActive == true then 
         d.print("actionHandler: STOPPED PlayerFoundCamp from activating due to PlayerSetCamp delay.")    
-        return 
+        return
     end
+    d.print("Camper_PlayerFoundCamp")
+    waitingForSitDown = true
+    secureButton:StartWaitForSitDown()
+end)
+
+pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
+    if not waitingForSitDown then return end
+    if waitingForSitDown then secureButton:CancelWaitForSitDown() end
+    waitingForSitDown = false
     secureButton:SetToPlayerFoundCamp()
 end)
+-- ________________________________________________________________________________________________________________________________________________
 

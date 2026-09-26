@@ -31,16 +31,13 @@ local campSpellTable = {
 local function spellTracker_Events(self, event, unit, ...)
     if camp.addonLoaded == false then return end
     local arg4, arg5 = ...
-    if CamperConfig.checkboxes.testerMode and event == "PLAYER_STOPPED_MOVING" then
+    if CamperConfig.checkboxes.spellTester and event == "PLAYER_STOPPED_MOVING" then
         pr:TriggerEvent("Camper_PlayerSetCamp")
     elseif event == "UNIT_SPELLCAST_SUCCEEDED" and not issecretvalue(unit) and unit == "player" then
-        if not CheckTable(campSpellTable, arg5) then return end
-        pr:TriggerEvent("Camper_PlayerSetCamp")
-    elseif event == "UNIT_AURA" and not issecretvalue(unit) and unit == "player" then
         if not CheckTable(campSpellTable, arg5) then return end
         pr:TriggerEvent("Camper_PlayerSetCamp")
     end
 end
 
 spellTrackerFrame:SetScript("OnEvent", spellTracker_Events)
-spellTrackerFrame:RegisterEvent("PLAYER_STOPPED_MOVING")
+spellTrackerFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")

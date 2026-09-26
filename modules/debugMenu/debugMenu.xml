@@ -1,0 +1,93 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+    <Script file="debugMenu.lua"/>
+
+    <Frame name="Camper_DebugMenu" parentKey="Camper_DebugMenu" mixin="Camper_DebugMenuMixin" toplevel="true" clampedToScreen="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" hidden="true">
+        <Size x="350" y="300"/>
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="UIParent" relativePoint="CENTER" x="500" y="100"/>
+        </Anchors>
+        <Scripts>
+            <OnLoad method="OnLoad"/>
+            <OnMouseDown>
+                self:Raise()
+            </OnMouseDown>
+            <OnDragStart>
+                self:StartMoving()
+            </OnDragStart>
+            <OnDragStop>
+                self:StopMovingOrSizing()
+            </OnDragStop>
+        </Scripts>
+        <Frames>
+            <Button name="$parent_SetupCamp" parentKey="setupCamp" inherits="Legolando_SimpleSquareButtonTemplate_Camper">
+                <Size x="96" y="96"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="20" y="-40"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parent_Title" parentKey="title" text="Set Up Camp" inherits="GameFontNormalSmall">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>  
+            </Button>
+            <Button name="$parent_FoundCamp" parentKey="foundCamp" inherits="Legolando_SimpleSquareButtonTemplate_Camper">
+                <Size x="96" y="96"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="120" y="-40"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parent_Title" parentKey="title" text="Entered Camp Aura" inherits="GameFontNormalSmall">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>  
+            </Button>
+            <Button name="$parent_UnfoundCamp" parentKey="unfoundCamp" inherits="Legolando_SimpleSquareButtonTemplate_Camper">
+                <Size x="96" y="96"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="220" y="-40"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parent_Title" parentKey="title" text="Left Camp Aura" inherits="GameFontNormalSmall">
+                            <Anchors>
+                                <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="0" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>  
+            </Button>
+            <Frame name="$parent_Checkboxes" parentKey="checkboxes" inherits="Legolando_CheckboxesTemplate_Camper">
+                <Size x="1" y="1"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="20" y="-180"/>
+                </Anchors>
+                <Frames>
+                    <Frame parentKey="debugMode" inherits="Legolando_CheckboxFrameTemplate_Camper">
+                        <Size x="26" y="26"/>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="10" y="-5"/>
+                        </Anchors>
+                    </Frame>
+                    <Frame parentKey="spellTester" inherits="Legolando_CheckboxFrameTemplate_Camper">
+                        <Size x="26" y="26"/>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="10" y="-30"/>
+                        </Anchors>
+                    </Frame>
+                </Frames>
+            </Frame>
+        </Frames>
+    </Frame>
+
+
+</Ui>

@@ -9,36 +9,20 @@ local configPanel = Camper.configPanel
 
 
 local function setup_Checkboxes()
-    configPanel.checkboxes.debugMode.text:SetText("Debug Mode")
-    configPanel.checkboxes.debugMode.tooltip = "\nUse when troubleshooting."
-    configPanel.checkboxes.debugMode.onClickCallback = function(configPanel, isChecked) 
-        if isChecked == true then
-            pr:TriggerEvent("Camper_Settings_DebugEnabled")
-        elseif isChecked == false then
-            pr:TriggerEvent("Camper_Settings_DebugDisabled")
-        end
-    end
+    -- configPanel.checkboxes.someCheckbox1.text:SetText("Tester Mode")
+    -- configPanel.checkboxes.someCheckbox1.tooltip = "When checked: etc..."
+    -- configPanel.checkboxes.someCheckbox1.onClickCallback = function(configPanel, isChecked) 
+    --     if isChecked == true then
 
-    configPanel.checkboxes.testerMode.text:SetText("Tester Mode")
-    configPanel.checkboxes.testerMode.tooltip = colorRed:WrapTextInColorCode("ONLY MEANT FOR TESTING PURPOSES.\n\n") 
-    .. colorGrae:WrapTextInColorCode("When checked:\n\n"
-                                    .. "- treat \'Player Stopped Moving\' as --> \'Player Set Up A Campsite\'\n\n"
-                                    .. "- treat \'Player Stopped Turning\' as --> \'Player Found A Campsite\'\n\n"
-                                    .. "- message and waypoint will be sent to /say instead of General Chat")
-    configPanel.checkboxes.testerMode.onClickCallback = function(configPanel, isChecked) 
-        if isChecked == true then
-            pr:TriggerEvent("Camper_Settings_DebugEnabled")
-        elseif isChecked == false then
-            pr:TriggerEvent("Camper_Settings_DebugDisabled")
-        end
-    end
+    --     elseif isChecked == false then
 
-    configPanel.checkboxes.savedVarTable = CamperConfig.checkboxes
-    configPanel.checkboxes.testerMode.reference = "testerMode"
-    configPanel.checkboxes.debugMode.reference = "debugMode"
-    configPanel.checkboxes:Update()
+    --     end
+    -- end
+
+    -- configPanel.checkboxes.savedVarTable = CamperConfig.checkboxes
+    -- configPanel.checkboxes.someCheckbox1.reference = "someCheckbox1"
+    -- configPanel.checkboxes:Update()
     
-    if configPanel.checkboxes.debugMode.checkbox:GetChecked() then pr:TriggerEvent("Camper_Settings_DebugEnabled") end
 end
 
 local function setup_EditBoxes()

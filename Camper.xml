@@ -45,24 +45,18 @@
                             <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="10" y="-35"/>
                         </Anchors>
                         <Frames>
-                            <Frame parentKey="debugMode" inherits="Legolando_CheckboxFrameTemplate_Camper">
+                            <!-- <Frame parentKey="someCheckbox1" inherits="Legolando_CheckboxFrameTemplate_Camper">
                                 <Size x="26" y="26"/>
                                 <Anchors>
                                     <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="10" y="-5"/>
                                 </Anchors>
-                            </Frame>
-                            <Frame parentKey="testerMode" inherits="Legolando_CheckboxFrameTemplate_Camper">
-                                <Size x="26" y="26"/>
-                                <Anchors>
-                                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="10" y="-30"/>
-                                </Anchors>
-                            </Frame>
+                            </Frame> -->
                         </Frames>
                     </Frame>
                     <EditBox name="Camper_HideAfterEditBox" parentKey="hideAfter" letters="3" scale="1.2" inherits="Legolando_NumericInputBoxWithForceNegativeTempate_Camper">
                         <Size x="38" y="25"/>
                         <Anchors>
-                            <Anchor point="TOPLEFT" x="25" y="-90"/>
+                            <Anchor point="TOPLEFT" x="25" y="-35"/>
                         </Anchors>
                         <Layers>
                             <Layer level="ARTWORK">
@@ -77,9 +71,19 @@
                                     </Anchors>
                                 </FontString>
                             </Layer>
-                        </Layers>
-                  
+                        </Layers>                  
                     </EditBox>
+                    <Button name="$parent_DebugMenu" parentKey="debugMenu" text="Debug" inherits="GameMenuButtonTemplate">
+                        <Size x="72" y="36"/>
+                        <Anchors>
+                            <Anchor point="BOTTOM" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="17"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnClick>
+                                Camper_DebugMenu:Show()
+                            </OnClick>
+                        </Scripts>
+                    </Button>
                 </Frames>
             </Frame>
         </Frames>

@@ -13,4 +13,7 @@
     
     <Include file="singular\spellTracker.lua"/>
     <Include file="singular\auraTracker.lua"/>
+    <Include file="singular\securehooks.lua"/>
+    
+    <Include file="debugMenu\embeds.xml"/>
 </Ui>

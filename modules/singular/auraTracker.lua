@@ -20,6 +20,7 @@ local function queryCampAuraFromSpellIDAndUpdateTracked()
     local auraData = LSpell:GetNonSecretActiveAuraDataFromSpell(CAMPAURA_SPELLID)
     if not auraData then 
         trackedInstanceIDs[CAMPAURA_SPELLID] = nil
+        pr:TriggerEvent("Camper_PlayerNOTFoundCamp")
         return
     end
     local campAuraInstanceID = auraData.auraInstanceID
@@ -32,13 +33,10 @@ end
 local function auraTracker_Events(self, event, unit, ...)
     if camp.addonLoaded == false then return end
     local arg4, arg5 = ...
-    if CamperConfig.checkboxes.testerMode and event == "PLAYER_STOPPED_TURNING" then
-        pr:TriggerEvent("Camper_PlayerFoundCamp")
-    elseif event == "UNIT_AURA" and not issecretvalue(unit) and unit == "player" then
+    if event == "UNIT_AURA" and not issecretvalue(unit) and unit == "player" then
         queryCampAuraFromSpellIDAndUpdateTracked()
     end
 end
 
 auraTrckerFrame:SetScript("OnEvent", auraTracker_Events)
-auraTrckerFrame:RegisterEvent("PLAYER_STOPPED_TURNING")
 auraTrckerFrame:RegisterEvent("UNIT_AURA")

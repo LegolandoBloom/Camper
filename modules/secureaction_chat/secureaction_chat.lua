@@ -73,6 +73,7 @@ end
 local macroSoundEffectLine = "/script PlaySound(5274)"
 local macroCloseFrameLine = "/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
 
+-- _____________________________________ Setup Camp _____________________________________
 local playerSetUpCampMessage = T["[Camper]: I've set up camp here!"]
 local testing = true
 function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
@@ -82,12 +83,24 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
-    if CamperConfig.checkboxes.testerMode then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
+    if CamperConfig.checkboxes.spellTester then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerSetUpCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
         self:ActivateWithAttributes()
     end
+end
+-- ______________________________________________________________________________________
+
+-- _____________________________________ Found Camp _____________________________________
+function Camper_SendChatMsgSecureActionButtonMixin:StartWaitForSitDown()
+    self:DesaturateHierarchy(1)
+    self:Show()
+end
+function Camper_SendChatMsgSecureActionButtonMixin:CancelWaitForSitDown()
+    print("called")
+    self:DesaturateHierarchy(0)
+    self:Hide()
 end
 
 local playerFoundCampMessage = T["[Camper]: I found a camp here!"]
@@ -99,13 +112,14 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     if testing then generalChat_index = 1 end
     local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
-    if CamperConfig.checkboxes.testerMode then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
+    if CamperConfig.checkboxes.spellTester then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerFoundCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
         self:ActivateWithAttributes()
     end
 end
+-- ______________________________________________________________________________________
 
 local hideTimerMessage = T["Hiding in: "]
 -- _____________________________ Hide-Delayer _____________________________
@@ -135,8 +149,6 @@ function Camper_SendChatMsgSecureActionButtonMixin:ResetDelayer()
     self.hideTimer:SetText(nil)
     self:SetScript("OnUpdate", nil)
 end
-
-
 
 -- ___MAYBE NOT NEEDED__
 -- function Camper_SendChatMsgSecureActionButtonMixin:PauseHideDelayer()

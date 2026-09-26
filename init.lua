@@ -47,8 +47,6 @@ CamperUI = {
 function Init_CamperSavedVariables()
     if CamperConfig == nil then CamperConfig = {} end
     if CamperConfig.checkboxes == nil then CamperConfig.checkboxes = {} end
-    if CamperConfig.checkboxes.debugMode == nil then CamperConfig.checkboxes.debugMode = false end
-    if CamperConfig.checkboxes.testerMode == nil then CamperConfig.checkboxes.testerMode = false end
     if CamperConfig.editBoxes == nil then CamperConfig.editBoxes = {} end
     if CamperConfig.editBoxes.hideAfter == nil then CamperConfig.editBoxes.hideAfter = 8 end
 
@@ -261,6 +259,9 @@ function Camper_EventLoader(self, event, unit, ...)
         Init_CamperSavedVariables()
         camp.addonLoaded = true
         Camper_SetupConfigPanel()
+
+        Camper_InitDebugMenuSavedVars()
+        Camper_SetupDebugMenu()
     elseif event == "PLAYER_ENTERING_WORLD" then
         -- return if zone change
         if unit == false and arg4 == false then return end
