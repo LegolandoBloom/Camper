@@ -7,7 +7,6 @@ local addonName, camp = ...
 local pr = camp.pr
 
 local function _setupCheckboxes(checkboxesFrame)
-    print("Calleeeed")
     checkboxesFrame.debugMode.text:SetText("Debug Prints")
     checkboxesFrame.debugMode.tooltip = "\nUse when troubleshooting."
     checkboxesFrame.debugMode.onClickCallback = function(configPanel, isChecked) 

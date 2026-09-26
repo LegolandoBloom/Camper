@@ -9,7 +9,7 @@ local configPanel = Camper.configPanel
 
 
 local function setup_Checkboxes()
-    -- configPanel.checkboxes.someCheckbox1.text:SetText("Tester Mode")
+    -- configPanel.checkboxes.someCheckbox1.text:SetText("Some Checkbox 1")
     -- configPanel.checkboxes.someCheckbox1.tooltip = "When checked: etc..."
     -- configPanel.checkboxes.someCheckbox1.onClickCallback = function(configPanel, isChecked) 
     --     if isChecked == true then

@@ -56,7 +56,7 @@
                     <EditBox name="Camper_HideAfterEditBox" parentKey="hideAfter" letters="3" scale="1.2" inherits="Legolando_NumericInputBoxWithForceNegativeTempate_Camper">
                         <Size x="38" y="25"/>
                         <Anchors>
-                            <Anchor point="TOPLEFT" x="25" y="-35"/>
+                            <Anchor point="TOPLEFT" x="25" y="-40"/>
                         </Anchors>
                         <Layers>
                             <Layer level="ARTWORK">
@@ -76,7 +76,7 @@
                     <Button name="$parent_DebugMenu" parentKey="debugMenu" text="Debug" inherits="GameMenuButtonTemplate">
                         <Size x="72" y="36"/>
                         <Anchors>
-                            <Anchor point="BOTTOM" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="17"/>
+                            <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT" x="30" y="17"/>
                         </Anchors>
                         <Scripts>
                             <OnClick>
