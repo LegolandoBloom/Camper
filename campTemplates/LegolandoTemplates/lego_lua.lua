@@ -1,4 +1,4 @@
--- 'ang' is the angleur namespace
+-- 'camp' is the camper namespace
 local addonName, camp = ...
 camp.lego = {}
 local lego = camp.lego

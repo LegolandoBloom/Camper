@@ -4,7 +4,7 @@ local colorYello = CreateColor(1.0, 0.82, 0.0)
 local colorBlu = CreateColor(0.61, 0.85, 0.92)
 local colorGreen = CreateColor(0, 1, 0)
 
--- 'ang' is the angleur namespace
+-- 'camp' is the camper namespace
 local addonName, camp = ...
 
 camp.addonLoaded = false
