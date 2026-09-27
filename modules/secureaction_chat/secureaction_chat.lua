@@ -175,6 +175,7 @@ end
 function Camper_SendChatMsgSecureActionButtonMixin:StartWaitForSitDown()
     if self.attributesActive then return end
     self.waitingForSitDown = true
+    d.print("started wait-for-sitdown")
     self:DesaturateHierarchy(1)
     if not InCombatLockdown() then 
         self:Show()
@@ -185,6 +186,7 @@ end
 function Camper_SendChatMsgSecureActionButtonMixin:CancelWaitForSitDown()
     if self.attributesActive then return end
     self.waitingForSitDown = false
+    d.print("canceled wait-for-sitdown")
     self:DesaturateHierarchy(0)
     if not InCombatLockdown() then 
         self:Hide()
@@ -296,7 +298,8 @@ function Camper_SendChatMsgSecureActionButtonMixin.OnEvent(self, event, unit, ..
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnShow()
-
+    -- bugs out in "PUSHED" state if player's ActionButtonUseKeyDown is set to 1, so we reset it here
+    self:SetButtonState("NORMAL")
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnHide()
