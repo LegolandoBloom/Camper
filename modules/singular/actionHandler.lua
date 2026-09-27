@@ -1,3 +1,5 @@
+local T = Camper_Translate
+
 local LU = LegolandoUtil
 local LM = LU.Map
 
@@ -23,6 +25,7 @@ local waitingForSitDown = false
 
 
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
+    print(T["Camper: You've set up camp. Click the \'Camper Button\' to share the Waypoint!"])
     secureButton:SetToPlayerSetupCamp()
     foundDelayActive = true
     if waitingForSitDown then secureButton:CancelWaitForSitDown() end
@@ -52,6 +55,7 @@ pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
     end
     d.print("Camper_PlayerFoundCamp")
     waitingForSitDown = true
+    print(T["Camper: Detected Campfire nearby. If you want to share its [Waypoint]: please go towards it, and do /sit."])
     secureButton:StartWaitForSitDown()
 end)
 
@@ -59,6 +63,7 @@ pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
     if not waitingForSitDown then return end
     if waitingForSitDown then secureButton:CancelWaitForSitDown() end
     waitingForSitDown = false
+    print(T["Camper: Button Activated. Click to share the camp Waypoint!"])
     secureButton:SetToPlayerFoundCamp()
 end)
 -- ________________________________________________________________________________________________________________________________________________

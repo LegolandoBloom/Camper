@@ -14,7 +14,9 @@ local colorDarkRed = CreateColor(0.68, 0, 0)
 local colorDarkBlu = CreateColor(0.12, 0.5, 1)
 
 local colorGeneralChat = CreateColor(1, 0.75, 0.75)
-local colorCamper = CreateColor(0.76, 0.33, 0.03)
+local colorCamper = CreateColor(1, 0.62, 0)
+local colorCampfire = CreateColor(0.8, 0.43, 0.23)
+local colorWaypoint = CreateColor(0.86, 0.86, 0)
 
 
 T["Camper Configuration"] = "Camper Configuration"
@@ -55,3 +57,21 @@ T["Announce Camp!"] = "Announce Camp!"
 T["Hiding in: "] = "Hiding in: "
 T["Hide After:"] = "Hide After:"
 T["seconds"] = "seconds"
+
+
+-- Chat prints for when callbacks trigger
+T["Camper: You've set up camp. Click the \'Camper Button\' to share the Waypoint!"] = colorCamper:WrapTextInColorCode("Camper: ") 
+.. "You've set up camp. Click the \'Camper Button\' to share the " .. colorWaypoint:WrapTextInColorCode("Waypoint") .. "!"
+
+T["Camper: Detected Campfire nearby. If you want to share its [Waypoint]: please go towards it, and do /sit."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Detected " .. colorCampfire:WrapTextInColorCode("Campfire ") .. "nearby." 
+.. " If you want to share its " .. colorWaypoint:WrapTextInColorCode("[Waypoint]") .. ": please go towards it, and do " .. colorYello:WrapTextInColorCode("/sit") .. "."
+
+T["Camper: Button Activated. Click to share the camp Waypoint!"] = colorCamper:WrapTextInColorCode("Camper: ") .. "Button Activated. Click to share the camp Waypoint!"
+
+-- Wait for sitdown tooltip
+T["You need to sit down next to the camp for Camper to get its proper waypoint. Please locate the campfire and do /sit."] = "You need to sit down next to the camp for Camper to get its proper " .. colorWaypoint:WrapTextInColorCode("waypoint") .. ". Please locate the campfire and do " 
+.. colorYello:WrapTextInColorCode("/sit") .. "."
+
+
+T["[Debug] Click to say: "] = "[Debug] Click to say: "
+T["Waiting for /sit"] = colorWhite:WrapTextInColorCode("Waiting for ") .. colorYello:WrapTextInColorCode("/sit")

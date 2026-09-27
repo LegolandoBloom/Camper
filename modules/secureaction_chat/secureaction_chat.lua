@@ -15,9 +15,62 @@ pr:RegisterCallback("Camper_Settings_DebugDisabled", function(_, caller)
     d.toggleDebug(false)
 end)
 
+                                                                   
+--                               ┌────────────────────────────┐                   
+--  _____________________________│ Current Logical Structure: │_____________________________
+--                               └────────────────────────────┘                                                                                                                   
+
+--  External Events(that trigger from outside of the file)                                                          
+--  ──────────────────────────────────────────────────────                                                          
+                                                                                                                    
+--    Player enters camp range                                                                                      
+--     - :StartWaitForSitDown()  Desaturate button. Set tooltip to 'wait for /sit'.                                 
+                                                                                                                    
+                                                                                                                    
+--    Player leaves camp range                                                                                      
+--      - :CancelWaitForSitDown() Saturate button. Remove tooltip.                                                  
+                                                                                                                    
+--    Player casts "Set Campfire"                                                                                   
+--      - :CancelWaitForSitDown() Saturate button. Remove tooltip.                                                  
+                                                                                                                    
+--      - :SetToPlayerSetupCamp()────────┐                                                                          
+--                                       └─► if not in combat: ActivateWithAttributes()                             
+                                                                                                                    
+--    Player sits down(while within camp range)                                                                     
+                                                                                                                    
+--      - if waiting for sit: :SetToPlayerFoundCamp()                                                               
+                                                                                                                    
+                                                                                                                    
+--  Internal(?) Events(actual WOW API events)                                                                       
+--  ─────────────────────────────────────────                                                                       
+                                                                                                                    
+--    PLAYER_REGEN_DISABLED                                                                                         
+--     - if shown: :Hide()                                                                                          
+                                                                                                                    
+--    PLAYER_REGEN_ENABLED                                                                                          
+--     1) :SetToPlayerSetupCamp() OR :SetToPlayerFoundCamp() called during combat.(macrobody is in the buffer)      
+--       - ActivateWithAttributes()                                                                                 
+                                                                                                                    
+--     2) Delay remains                                   -                                                         
+--       - Show(), which will continue the remainder delay                                                          
+                                                                                                                    
+--     3) Neither                                                                                                   
+--       - do nothing                                                                                               
+--  ________________________________________________________________________________________
 
 local T = Camper_Translate
 
+local macroSoundEffectLine = "/script PlaySound(5274)"
+local macroCloseFrameLine = "/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
+
+local tooltipTitle_GeneralChat = T["Click to send to General Chat: "]
+local tooltipTitle_Say = T["[Debug] Click to say: "]
+local toooltipTitle_WaitingForSitDown = T["Waiting for /sit"]
+
+local tooltip_WaitingForSitDown = T["You need to sit down next to the camp for Camper to get its proper waypoint. Please locate the campfire and do /sit."]
+
+local playerSetUpCampMessage = T["[Camper]: I've set up camp here!"]
+local playerFoundCampMessage = T["[Camper]: I found a camp here!"]
 
 Camper_SendChatMsgSecureActionButtonMixin = {}
 
@@ -31,9 +84,8 @@ function Camper_SendChatMsgSecureActionButtonMixin:Init()
     end
     -- no need to save teeburu[reference] as a value, we'll need it to be dynamic
     d.tableToString(teeburu)
-
+    
     initiated = true
-    self.tooltipTitle = T["Click to send to General Chat: "]
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:OnLoad()
@@ -41,16 +93,23 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnLoad()
     self.icon:SetTexture("Interface/AddOns/Camper/images/campericon.png")
     self.title:SetText(T["Announce Camp!"])
     
-
+    
     self:SetAttribute("type", "macro")
     self:RegisterForClicks("AnyDown", "AnyUp")
-
+    
     self:SetMovable(true)
     self:RegisterForDrag("LeftButton")
-
+    
     self:RegisterEvent("PLAYER_REGEN_DISABLED")
     self:RegisterEvent("PLAYER_REGEN_ENABLED")
 end
+
+
+function Camper_SendChatMsgSecureActionButtonMixin:IsTesting()
+    if CamperDebug.checkboxes.simulationEnabled or CamperDebug.checkboxes.spellTester then return true end
+    return false
+end
+
 
 function Camper_SendChatMsgSecureActionButtonMixin:ActivateWithAttributes()
     d.print("ActivateWithAttributes called")
@@ -60,6 +119,11 @@ function Camper_SendChatMsgSecureActionButtonMixin:ActivateWithAttributes()
     self:SetAttribute("macrotext", self.macroTextBuffer)
     self.macroTextBuffer = nil
     self.tooltipText = self.tooltipTextBuffer
+    if self:IsTesting() then 
+        self.tooltipTitle = tooltipTitle_Say
+    else 
+        self.tooltipTitle = tooltipTitle_GeneralChat
+    end
     self.tooltipTextBuffer = nil
     self:Show()
     self:StartHideDelayer()
@@ -67,14 +131,14 @@ end
 function Camper_SendChatMsgSecureActionButtonMixin:ClearAttributes()
     if not initiated then return end
     self:SetAttribute("macrotext", "")
+    self.tooltipTitle = nil
     self.tooltipText = nil
 end
 
-local macroSoundEffectLine = "/script PlaySound(5274)"
-local macroCloseFrameLine = "/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
+
 
 -- _____________________________________ Setup Camp _____________________________________
-local playerSetUpCampMessage = T["[Camper]: I've set up camp here!"]
+
 local testing = true
 function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     d.print("SetToPlayerSetupCamp called")
@@ -83,7 +147,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
-    if CamperDebug.checkboxes.simulationEnabled or CamperDebug.checkboxes.spellTester then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
+    if self:IsTesting() then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerSetUpCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
@@ -93,17 +157,21 @@ end
 -- ______________________________________________________________________________________
 
 -- _____________________________________ Found Camp _____________________________________
+
 function Camper_SendChatMsgSecureActionButtonMixin:StartWaitForSitDown()
     self:DesaturateHierarchy(1)
     self:Show()
+    self.tooltipTitle = toooltipTitle_WaitingForSitDown
+    self.tooltipText = tooltip_WaitingForSitDown
 end
 function Camper_SendChatMsgSecureActionButtonMixin:CancelWaitForSitDown()
-    print("called")
     self:DesaturateHierarchy(0)
     self:Hide()
+    self.tooltipTitle = nil
+    self.tooltipText = nil
 end
 
-local playerFoundCampMessage = T["[Camper]: I found a camp here!"]
+
 function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
     d.print("SetToPlayerFoundCamp called")
     if not initiated then return end
@@ -112,7 +180,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     if testing then generalChat_index = 1 end
     local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
-    if CamperDebug.checkboxes.simulationEnabled then macroText = "/s " .. playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
+    if self:IsTesting() then macroText = "/s " .. playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
     self.tooltipTextBuffer = playerFoundCampMessage .. " " .. hyperlink
     if not InCombatLockdown() then
@@ -226,4 +294,3 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnDragStop(button)
     self:StopMovingOrSizing()
     self.title:Show()
 end
-
