@@ -1,4 +1,7 @@
-## Interface: 16001, 120100
+## Interface: 16001
+#@debug@
+## Interface: 120100
+#@end-debug@
 ## Title: Camper
 ## Notes: I have set up camp here!
 ## Version: Camper @project-version@
