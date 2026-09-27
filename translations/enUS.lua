@@ -69,9 +69,13 @@ T["Camper: Detected Campfire nearby. If you want to share its [Waypoint]: please
 T["Camper: Button Activated. Click to share the camp Waypoint!"] = colorCamper:WrapTextInColorCode("Camper: ") .. "Button Activated. Click to share the camp Waypoint!"
 
 -- Wait for sitdown tooltip
-T["You need to sit down next to the camp for Camper to get its proper waypoint. Please locate the campfire and do /sit."] = "You need to sit down next to the camp for Camper to get its proper " .. colorWaypoint:WrapTextInColorCode("waypoint") .. ". Please locate the campfire and do " 
+T["You need to sit down next to the camp for Camper to get its proper waypoint.\nPlease locate the campfire and do /sit."] = "You need to sit down next to the camp for Camper to get its proper " .. colorWaypoint:WrapTextInColorCode("waypoint") .. ".\nPlease locate the campfire and do " 
 .. colorYello:WrapTextInColorCode("/sit") .. "."
 
 
 T["[Debug] Click to say: "] = "[Debug] Click to say: "
 T["Waiting for /sit"] = colorWhite:WrapTextInColorCode("Waiting for ") .. colorYello:WrapTextInColorCode("/sit")
+
+
+T["Camper: Please locate the campfire and do /sit before sharing."] = colorCamper:WrapTextInColorCode("Camper: ") 
+.. "Please locate the campfire and do " .. colorYello:WrapTextInColorCode("/sit ") .. "before sharing."

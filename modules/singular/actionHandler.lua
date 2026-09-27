@@ -26,14 +26,20 @@ local waitingForSitDown = false
 
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
     print(T["Camper: You've set up camp. Click the \'Camper Button\' to share the Waypoint!"])
+    if waitingForSitDown then secureButton:CancelWaitForSitDown() end
     secureButton:SetToPlayerSetupCamp()
     foundDelayActive = true
-    if waitingForSitDown then secureButton:CancelWaitForSitDown() end
+    --__ Debug ___
+    Camper_ActionSimulator:TogglePlayerSetupCampDelay(true)
+    --____________
     waitingForSitDown = false
     Camper_SingleDelayer(AFTERSPELL_FOUNDAURA_DELAYER, 0, 1, delayFrame, function(remainingDelay)
         d.print("actionHandler: PlayerSetCamp delay active:", LU.SimplifyFloat(remainingDelay, 0))
     end, function()
         foundDelayActive = false
+        --__ Debug ___
+        Camper_ActionSimulator:TogglePlayerSetupCampDelay(false)
+        --____________
     end)
 end)
 
@@ -53,6 +59,7 @@ pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
         d.print("actionHandler: STOPPED PlayerFoundCamp from activating due to PlayerSetCamp delay.")    
         return
     end
+    if waitingForSitDown then secureButton:CancelWaitForSitDown() end
     d.print("Camper_PlayerFoundCamp")
     waitingForSitDown = true
     print(T["Camper: Detected Campfire nearby. If you want to share its [Waypoint]: please go towards it, and do /sit."])
