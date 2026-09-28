@@ -1,0 +1,62 @@
+When testing Camper functionality after new changes:
+
+SUC - Set Up Camp
+ECA - Entered Camp Aura
+LCA - Left Camp Aura
+X - clicked close button
+SIT - player does /sit
+
+Questions: 
+tg = Tooltip good?
+hf = Hide timer functional?
+csmg = Click. Is the sent message good?
+bph = Is the button properly hidden?
+ccy = Is button "Can't click yet", as it should be?
+nnn = Nothing should show up. No button. No chat message or prompt.
+
+____ SUC ____
+SUC : tg? csmg?
+ECA -> SUC : tg? csmg?
+ECA -> LCA -> SUC : tg? csmg?
+SUC -> ECA : Is ECA simulator button properly disabled? tg? csmg?
+SUC -> SUC : does SUC override the previous SUC properly
+
+____ ECA ____
+ECA -> ccy?
+ECA -> LCA : bph?
+ECA -> X : bph?
+ECA -> X -> SIT : tg? hf? csmg?
+ECA -> X -> SIT -> LCA : tg? hf? csmg?
+ECA -> X -> SIT -> X -> ECA : ccy?
+ECA -> LCA -> SIT : nnn?
+
+_____SUC overrides ECA_____
+SUC -> ECA : tg? csmg?
+ECA -> SUG -> ECA : tg? csmg?
+SUC -> ECA -> LCA -> tg? csmg?
+
+
+
+COMBAT_START
+COMBAT_END
+
+____Combat SUC____
+SUC -> COMBAT_START : bph? -> COMBAT_END : tg? hf? csmg?
+SUC -> COMBAT_START -> let simulator disable timer run out -> ECA -> COMBAT_END : tg? hf? csmg?(should be that of the setup camp)
+SUC -> COMBAT_START -> let simulator disable timer run out -> ECA -> SIT -> COMBAT_END : tg? hf? csmg?(should be that of the found camp)
+SUC -> COMBAT_START -> let simulator disable timer run out -> ECA -> LCA -> SIT -> COMBAT_END : tg? hf? csmg?(should be that of the setup camp)
+SUC -> wait 5 seconds for delay to progress -> COMBAT_START -> SUC tg? hf? csmg?(new SUC should have overriden previous one, fresh timer)
+
+____Combat ECA_____
+ECA -> COMBAT_START -> COMBAT_END -> ccy? -> SIT -> tg? hf? csmg? -- CAN'T TEST WHEN A COMBAT AURA HAPPENS and therefore triggers LCA(combat auras often do appear)
+COMBAT_START -> ECA -> COMBAT_END ->  : ccy? -- CAN'T TEST WHEN A COMBAT AURA HAPPENS and therefore triggers LCA(combat auras often do appear)
+COMBAT_START -> ECA -> (quickly before a combat aura is added)SIT -> COMBAT_END : tg? hf? csmg?
+COMBAT_START -> ECA -> (quickly before a combat aura is added)SIT -> SUC -> COMBAT_END : tg? hf? csmg?(should be that of the SUC)
+COMBAT_START -> ECA -> LCA(quickly before a combat aura is added)-> SIT -> : nnn?
+
+
+____Spell Tester____
+Test if TestSpell Table Spells trigger SUC
+
+____Aura Tester____
+Test if TestAura Feint triggers ECA
