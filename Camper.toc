@@ -40,3 +40,7 @@ ui.lua
 
 modules\embeds_all.xml
 modules\embeds_classic.xml
+
+#@do-not-package@
+test\test.lua
+#@end-do-not-package@

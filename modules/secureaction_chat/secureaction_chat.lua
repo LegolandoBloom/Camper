@@ -23,13 +23,13 @@ end)
 --  ──────────────────────────────────────────────────────                                                         
                                                                                                                     
 --    Player enters camp range                                                                                     
---     - :StartWaitForSitDown()  Desaturate button. Set tooltip to 'wait for /sit'. If not in combat, Show()       
+--     - :Start_PromptUser()  Desaturate button. Set tooltip to 'wait for /sit'. If not in combat, Show()       
                                                                                                                     
 --    Player leaves camp range                                                                                     
---      - :CancelWaitForSitDown() Saturate button. Remove tooltip. If not in combat, Hide()                        
+--      - :Cancel_PromptUser() Saturate button. Remove tooltip. If not in combat, Hide()                        
                                                                                                                     
 --    Player casts "Set Campfire"                                                                                  
---      - :CancelWaitForSitDown() Saturate button. Remove tooltip.                                                 
+--      - :Cancel_PromptUser() Saturate button. Remove tooltip.                                                 
                                                                                                                     
 --      - :SetToPlayerSetupCamp()────────┐                                                                         
 --                                       └─► if not in combat: ActivateWithAttributes()                            
@@ -62,18 +62,9 @@ end)
 
 local T = Camper_Translate
 
-local macroSoundEffectLine = "/script PlaySound(5274)"
-local macroCloseFrameLine = "/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
 
-local tooltipTitle_GeneralChat = T["Click to send to General Chat: "]
-local tooltipTitle_Say = T["[Debug] Click to say: "]
-local toooltipTitle_WaitingForSitDown = T["Waiting for /sit"]
 
-local tooltip_WaitingForSitDown = T["You need to sit down next to the camp for Camper to get its proper waypoint.\nPlease locate the campfire and do /sit."]
-    
-local playerSetUpCampMessage = T["[Camper]: I've set up camp here!"]
-local playerFoundCampMessage = T["[Camper]: I found a camp here!"]
-local playerWarning_WaitingForSitDown = T["Camper: Please locate the campfire and do /sit before sharing."] 
+
 
 Camper_SendChatMsgSecureActionButtonMixin = {}
 
@@ -112,28 +103,45 @@ function Camper_SendChatMsgSecureActionButtonMixin:IsTesting()
     return false
 end
 
-
+--___________________________ Buffers ___________________________
+function Camper_SendChatMsgSecureActionButtonMixin:ClearBuffers()
+    self.macroTextBuffer = nil
+    self.tooltipTitleBuffer = nil
+    self.tooltipTextBuffer = nil
+end
+function Camper_SendChatMsgSecureActionButtonMixin:ValidateBuffers()
+    if not self.macroTextBuffer then return false, "macroTextBuffer" end
+    if not self.tooltipTitleBuffer then return false, "tooltipTitleBuffer" end
+    if not self.tooltipTextBuffer then return false, "tooltipTextBuffer" end
+    return true
+end
+function Camper_SendChatMsgSecureActionButtonMixin:ActivateBuffers()
+    self:SetAttribute("macrotext", self.macroTextBuffer)
+    self.tooltipText = self.tooltipTextBuffer
+    self.tooltipTitle = self.tooltipTitleBuffer
+end
+--_______________________________________________________________
 function Camper_SendChatMsgSecureActionButtonMixin:ActivateWithAttributes()
     d.print("ActivateWithAttributes called")
     if not initiated then return end
-    if not self.macroTextBuffer then return end
-    if InCombatLockdown() then return end
-    self:SetAttribute("macrotext", self.macroTextBuffer)
-    self.macroTextBuffer = nil
-    self.tooltipText = self.tooltipTextBuffer
-    if self:IsTesting() then 
-        self.tooltipTitle = tooltipTitle_Say
-    else 
-        self.tooltipTitle = tooltipTitle_GeneralChat
+    local valid, missing = self:ValidateBuffers()
+    if not valid then
+        print("Camper_SendChatMsgSecureActionButton: Buffer missing: ", missing)
+        self:ClearBuffers()
+        return 
     end
-    self.tooltipTextBuffer = nil
+    if InCombatLockdown() then return end
+    self:ActivateBuffers()
+    self:ClearBuffers()
     self:Show()
     self:StartHideDelayer()
     self.attributesActive = true
 end
+
 function Camper_SendChatMsgSecureActionButtonMixin:ClearAttributes()
     if not initiated then return end
     self:SetAttribute("macrotext", "")
+    self:ClearBuffers()
     self.tooltipTitle = nil
     self.tooltipText = nil
     self.attributesActive = false
@@ -141,50 +149,52 @@ end
 
 
 
--- _____________________________________ Setup Camp _____________________________________
-
-function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
-    d.print("SetToPlayerSetupCamp called")
+-- _____________________________________ Setup/Found Camp _____________________________________
+local macroEndSnippet = "\n/script PlaySound(5274)"
+.. "\n/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
+function Camper_SendChatMsgSecureActionButtonMixin:SetToSendMessageToChannelIndex(channelIndex, message, tooltipTitle, tooltipText)
+    d.print("SetToSendMessageToChannelIndex called, channelIndex:", channelIndex, "message:", message, "Tootlip: ", tooltipTitle, tooltipText)
     if not initiated then return end
-    local hyperlink = LM:GetCurrentPositionWaypointLink()
-    if not hyperlink then return end
-    local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
-    local macroText = "/c " .. generalChat_index .. " " ..  playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
-    if self:IsTesting() then macroText = "/s " .. playerSetUpCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
+    if not channelIndex or not message then return end
+    local macroText = "/c " .. channelIndex .. " " .. message .. macroEndSnippet
+    if self:IsTesting() then macroText = "/s " .. message .. macroEndSnippet end
     self.macroTextBuffer = macroText
-    self.tooltipTextBuffer = playerSetUpCampMessage .. " " .. hyperlink
+    self.tooltipTitleBuffer = tooltipTitle
+    self.tooltipTextBuffer = tooltipText
     if not InCombatLockdown() then
         self:ActivateWithAttributes()
     end
 end
--- ______________________________________________________________________________________
+-- ____________________________________________________________________________________________
 
--- _____________________________________ Found Camp _____________________________________
 
 
 -- _____ Waiting For SitDown _____
 -- APPENDED - Does NOT OVERWRITE SecureAction's OnClick
 function Camper_SendChatMsgSecureActionButtonMixin:PostClick(button, down)
     if button ~= "LeftButton" or down == true then return end
-    if not self.waitingForSitDown then return end
-    print(playerWarning_WaitingForSitDown)
+    if not self.waitingPromptedAction then return end
+    local warning = self.clickWarningMessage
+    if not warning then return end
+    print(warning)
 end
 
 
-function Camper_SendChatMsgSecureActionButtonMixin:StartWaitForSitDown()
+function Camper_SendChatMsgSecureActionButtonMixin:Start_PromptUser(tooltipTitle, tooltipText, clickWarningMessage)
     if self.attributesActive then return end
-    self.waitingForSitDown = true
+    self.waitingPromptedAction = true
     d.print("started wait-for-sitdown")
     self:DesaturateHierarchy(1)
     if not InCombatLockdown() then 
         self:Show()
     end
-    self.tooltipTitle = toooltipTitle_WaitingForSitDown
-    self.tooltipText = tooltip_WaitingForSitDown
+    self.tooltipTitle = tooltipTitle
+    self.tooltipText = tooltipText
+    self.clickWarningMessage = clickWarningMessage
 end
-function Camper_SendChatMsgSecureActionButtonMixin:CancelWaitForSitDown()
+function Camper_SendChatMsgSecureActionButtonMixin:Cancel_PromptUser()
     if self.attributesActive then return end
-    self.waitingForSitDown = false
+    self.waitingPromptedAction = false
     d.print("canceled wait-for-sitdown")
     self:DesaturateHierarchy(0)
     if not InCombatLockdown() then 
@@ -192,25 +202,14 @@ function Camper_SendChatMsgSecureActionButtonMixin:CancelWaitForSitDown()
     end
     self.tooltipTitle = nil
     self.tooltipText = nil
+    self.clickWarningMessage = nil
 end
 -- _______________________________
 
 
-function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
-    d.print("SetToPlayerFoundCamp called")
-    if not initiated then return end
-    local hyperlink = LM:GetCurrentPositionWaypointLink()
-    if not hyperlink then return end
-    local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
-    local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
-    if self:IsTesting() then macroText = "/s " .. playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
-    self.macroTextBuffer = macroText
-    self.tooltipTextBuffer = playerFoundCampMessage .. " " .. hyperlink
-    if not InCombatLockdown() then
-        self:ActivateWithAttributes()
-    end
-end
--- ______________________________________________________________________________________
+
+
+
 
 local hideTimerMessage = T["Hiding in: "]
 -- _____________________________ Hide-Delayer _____________________________
@@ -280,15 +279,15 @@ function Camper_SendChatMsgSecureActionButtonMixin.OnEvent(self, event, unit, ..
             d.print("Hiding due to combat")
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
-        -- "SetTo" function was called during combat, and now there is macroTextBuffer waiting to be processed
-        if self.macroTextBuffer then
+        -- "SetToSendMessageToChannelIndex" function was called during combat, and now there are buffers waiting to be processed
+        if self:ValidateBuffers() then
             d.print("\"SetTo\" function was called during combat")
                 self:ActivateWithAttributes()
-                -- Hide delay was ongoing when entering combat, and no new "SetTo" function was called
+        -- Hide delay was ongoing when entering combat, and no new "SetToSendMessageToChannelIndex" function to overwrite it was called
         elseif self.delayerActive then
             d.print("Remainder delay was not reset. Show and continue.")
             self:Show()
-        elseif self.waitingForSitDown then
+        elseif self.waitingPromptedAction then
             d.print("Was waiting for sitdown. Show and continue.")
             self:Show()
         end
