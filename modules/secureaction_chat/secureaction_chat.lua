@@ -143,7 +143,6 @@ end
 
 -- _____________________________________ Setup Camp _____________________________________
 
-local testing = true
 function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerSetupCamp()
     d.print("SetToPlayerSetupCamp called")
     if not initiated then return end
@@ -203,7 +202,6 @@ function Camper_SendChatMsgSecureActionButtonMixin:SetToPlayerFoundCamp()
     local hyperlink = LM:GetCurrentPositionWaypointLink()
     if not hyperlink then return end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
-    if testing then generalChat_index = 1 end
     local macroText = "/c " .. generalChat_index .. " " ..  playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine
     if self:IsTesting() then macroText = "/s " .. playerFoundCampMessage .. " " .. hyperlink .. "\n" .. macroSoundEffectLine .. "\n" .. macroCloseFrameLine end
     self.macroTextBuffer = macroText
