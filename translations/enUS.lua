@@ -82,5 +82,7 @@ T["Camper: Please locate the campfire and do /sit before sharing."] = colorCampe
 
 
 -- clickableLink.lua
+T["Camper: You've set up camp."] = colorCamper:WrapTextInColorCode("Camper: ") .. "You've set up camp."
+T["Camper: Camp successfully located!"] = colorCamper:WrapTextInColorCode("Camper: ") .. "Camp successfully located!"
 T["Camper: Can't locate Campfire. Can't share waypoint."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Can't locate Campfire. Can't share waypoint."
 T["Camper: Outdated link. Please locate/setup a new campfire to share the waypoint."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Outdated link. Please locate/setup a new campfire to share the waypoint."

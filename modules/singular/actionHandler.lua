@@ -52,8 +52,10 @@ pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
     print(T["Camper: You've set up camp. Click the \'Camper Button\' to share the Waypoint!"])
     if waitingForSitDown then secureButton:Cancel_PromptUser() end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
-    secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
-    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
+    local waypoint = LM:GetCurrentPositionWaypointLink()
+    secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
+    print(T["Camper: You've set up camp."])
+    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
     foundDelayActive = true
     --__ Debug ___
     Camper_ActionSimulator:TogglePlayerSetupCampDelay(true)
@@ -107,8 +109,11 @@ pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
     waitingForSitDown = false
     print(T["Camper: Button Activated. Click to share the camp Waypoint!"])
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
-    secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
-    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
+    local waypoint = LM:GetCurrentPositionWaypointLink()
+    secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
+    print(T["Camper: Camp successfully located!"])
+    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
+    
 end)
 -- ________________________________________________________________________________________________________________________________________________
 

@@ -30,7 +30,6 @@ SLASH_CAMPERTEST1 = "/camptest"
 
 
 local link_clickToWaypoint = "|cFFFFFF00|Haddon:Camper:ClickToWaypoint|h[Click here to share the Waypoint!]|h|r"
-local hi = "hi"
 
 local testing = false
 
@@ -40,15 +39,11 @@ local function linksCallback(_, link, text, button, chatFrame)
         -- DevTools_Dump(cl)
         if cl.linkActive then
             if cl:IsTesting() then
-                print("testing", cl.activeMessage .. link_clickToWaypoint)
-                securecall(C_ChatInfo.SendChatMessage, cl.activeMessage .. " " .. link_clickToWaypoint, "SAY")
-                C_ChatInfo.SendChatMessage(cl.activeMessage .. " " , "SAY") 
-                C_ChatInfo.SendChatMessage(link_clickToWaypoint, "SAY") 
-                C_ChatInfo.SendChatMessage(hi, "SAY") 
-
+                securecall(C_ChatInfo.SendChatMessage, cl.activeMessage, "SAY")
             else
-                securecall(C_ChatInfo.SendChatMessage, cl.activeMessage .. link_clickToWaypoint, "CHANNEL", nil, cl.activeChatIndex)
+                securecall(C_ChatInfo.SendChatMessage, cl.activeMessage, "CHANNEL", nil, cl.activeChatIndex)
             end
+            cl:ClearLink()
         elseif cl.waitingPromptedAction then
             cl:PostClick()
         else
@@ -104,28 +99,28 @@ end
 
 
 --___________________________ Buffers ___________________________
--- cl.activeMessageBuffer
--- cl.activeChatIndexBuffer
--- cl.activeTooltipTitleBuffer
--- cl.activeTooltipTextBuffer
+-- cl.messageBuffer
+-- cl.chatIndexBuffer
+-- cl.tooltipTitleBuffer
+-- cl.tooltipTextBuffer
 function cl:ClearBuffers()
-    self.activeMessageBuffer = nil
-    self.activeChatIndexBuffer = nil
-    self.activeTooltipTitleBuffer = nil
-    self.activeTooltipTextBuffer = nil
+    self.messageBuffer = nil
+    self.chatIndexBuffer = nil
+    self.tooltipTitleBuffer = nil
+    self.tooltipTextBuffer = nil
 end
 function cl:ValidateBuffers()
-    if not self.activeChatIndexBuffer then return false, "activeChatIndexBuffer" end
-    if not self.activeMessageBuffer then return false, "activeMessageBuffer" end
-    if not self.activeTooltipTitleBuffer then return false, "activeTooltipTitleBuffer" end
-    if not self.activeTooltipTextBuffer then return false, "activeTooltipTextBuffer" end
+    if not self.chatIndexBuffer then return false, "chatIndexBuffer" end
+    if not self.messageBuffer then return false, "messageBuffer" end
+    if not self.tooltipTitleBuffer then return false, "tooltipTitleBuffer" end
+    if not self.tooltipTextBuffer then return false, "tooltipTextBuffer" end
     return true
 end
 function cl:ActivateBuffers()
-    self.activeChatIndex = self.activeChatIndexBuffer
-    self.activeMessage = self.activeMessageBuffer
-    self.tooltipText = self.tooltipTextBuffer
-    self.tooltipTitle = self.tooltipTitleBuffer
+    self.activeChatIndex = self.chatIndexBuffer
+    self.activeMessage = self.messageBuffer
+    self.activeTooltipText = self.tooltipTextBuffer
+    self.activeTooltipTitle = self.tooltipTitleBuffer
 end
 --_______________________________________________________________
 
@@ -142,7 +137,7 @@ function cl:ActivateWithLink()
     if InCombatLockdown() then return end
     self:ActivateBuffers()
     self:ClearBuffers()
-    print(self.activeMessage, link_clickToWaypoint)
+    print(link_clickToWaypoint)
     self:ResetDelayer()
     self:StartLinkDisableDelayer()
     self.linkActive = true
@@ -153,8 +148,8 @@ function cl:ClearLink()
     self:ClearBuffers()
     self.activeChatIndex = nil
     self.activeMessage = nil
-    self.tooltipText = nil
-    self.tooltipTitle = nil
+    self.activeTooltipText = nil
+    self.activeTooltipTitle = nil
     self.linkActive = false
 end
 
@@ -163,10 +158,10 @@ function cl:SetToSendMessageToChannelIndex(channelIndex, message, tooltipTitle, 
     d.print("clickableLink: SetToSendMessageToChannelIndex called, channelIndex:", channelIndex, "message:", message, "Tootlip: ", tooltipTitle, tooltipText)
     if not self.initiated then return end
     if not channelIndex or not message then return end
-    self.activeChatIndexBuffer = channelIndex
-    self.activeMessageBuffer = message
-    self.activeTooltipTitleBuffer = tooltipTitle
-    self.activeTooltipTextBuffer = tooltipText
+    self.chatIndexBuffer = channelIndex
+    self.messageBuffer = message
+    self.tooltipTitleBuffer = tooltipTitle
+    self.tooltipTextBuffer = tooltipText
     if not InCombatLockdown() then
         self:ActivateWithLink()
     end
@@ -187,16 +182,16 @@ function cl:Start_PromptUser(tooltipTitle, tooltipText, clickWarningMessage)
     if self.linkActive then return end
     self.waitingPromptedAction = true
     d.print("clickableLink: started wait-for-sitdown")
-    self.tooltipTitle = tooltipTitle
-    self.tooltipText = tooltipText
+    self.activeTooltipTitle = tooltipTitle
+    self.activeTooltipText = tooltipText
     self.clickWarningMessage = clickWarningMessage
 end
 function cl:Cancel_PromptUser()
     if self.linkActive then return end
     self.waitingPromptedAction = false
     d.print("clickableLink: canceled wait-for-sitdown")
-    self.tooltipTitle = nil
-    self.tooltipText = nil
+    self.activeTooltipTitle = nil
+    self.activeTooltipText = nil
     self.clickWarningMessage = nil
 end
 -- _______________________________
@@ -269,7 +264,7 @@ local function cl_OnEvent(self, event, unit, ...)
         -- "SetToSendMessageToChannelIndex" function was called during combat, and now there are buffers waiting to be processed
         if cl:ValidateBuffers() then
             d.print("clickableLink: \"SetTo\" function was called during combat")
-                cl:ActivateWithLink()
+            cl:ActivateWithLink()
         -- Hide delay was ongoing when entering combat, and no new "SetToSendMessageToChannelIndex" function to overwrite it was called
         elseif cl.delayerActive then
             d.print("clickableLink: Remainder delay was not reset. Show and continue.")
