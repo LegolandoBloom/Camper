@@ -79,3 +79,8 @@ T["Waiting for /sit"] = colorWhite:WrapTextInColorCode("Waiting for ") .. colorY
 
 T["Camper: Please locate the campfire and do /sit before sharing."] = colorCamper:WrapTextInColorCode("Camper: ") 
 .. "Please locate the campfire and do " .. colorYello:WrapTextInColorCode("/sit ") .. "before sharing."
+
+
+-- clickableLink.lua
+T["Camper: Can't locate Campfire. Can't share waypoint."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Can't locate Campfire. Can't share waypoint."
+T["Camper: Outdated link. Please locate/setup a new campfire to share the waypoint."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Outdated link. Please locate/setup a new campfire to share the waypoint."

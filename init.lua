@@ -261,6 +261,7 @@ function Camper_EventLoader(self, event, unit, ...)
         Camper_SetupConfigPanel()
 
         Camper_InitDebugMenuSavedVars()
+        Camper_InitClickableLink()
         Camper_SetupDebugMenu()
     elseif event == "PLAYER_ENTERING_WORLD" then
         -- return if zone change
@@ -298,5 +299,5 @@ function Camper_EventLoader(self, event, unit, ...)
 end
 
 function Camper_Unload()
-    Camper_TempCVarHandler:ReleaseAll()
+    -- Camper_TempCVarHandler:ReleaseAll()
 end

@@ -8,6 +8,8 @@ local DEBUGGING = false
 local d = LU.Debug.CreateDebugHandler(DEBUGGING)
 local addonName, camp = ...
 local pr = camp.pr
+local cl = camp.clickableLink
+
 pr:RegisterCallback("Camper_Settings_DebugEnabled", function(_, caller)
     d.toggleDebug(true)
 end)
@@ -51,6 +53,7 @@ pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
     if waitingForSitDown then secureButton:Cancel_PromptUser() end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
+    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
     foundDelayActive = true
     --__ Debug ___
     Camper_ActionSimulator:TogglePlayerSetupCampDelay(true)
@@ -74,6 +77,7 @@ pr:RegisterCallback("Camper_PlayerNOTFoundCamp", function(ownerID)
     d.print("Camper_PlayerNOTFoundCamp")
     waitingForSitDown = false
     secureButton:Cancel_PromptUser()
+    cl:Cancel_PromptUser()
 end)
 
 pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
@@ -83,20 +87,28 @@ pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
         d.print("actionHandler: STOPPED PlayerFoundCamp from activating due to PlayerSetCamp delay.")    
         return
     end
-    if waitingForSitDown then secureButton:Cancel_PromptUser() end
+    if waitingForSitDown then 
+        secureButton:Cancel_PromptUser()
+        cl:Cancel_PromptUser()
+    end
     d.print("Camper_PlayerFoundCamp")
     waitingForSitDown = true
     print(T["Camper: Detected Campfire nearby. If you want to share its [Waypoint]: please go towards it, and do /sit."])
     secureButton:Start_PromptUser(s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message.clickWarning)
+    cl:Start_PromptUser(s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message.clickWarning)
 end)
 
 pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
     if not waitingForSitDown then return end
-    if waitingForSitDown then secureButton:Cancel_PromptUser() end
+    if waitingForSitDown then 
+        secureButton:Cancel_PromptUser()
+        cl:Cancel_PromptUser()
+    end
     waitingForSitDown = false
     print(T["Camper: Button Activated. Click to share the camp Waypoint!"])
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
+    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
 end)
 -- ________________________________________________________________________________________________________________________________________________
 

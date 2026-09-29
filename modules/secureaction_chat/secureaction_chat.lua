@@ -122,7 +122,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:ActivateBuffers()
 end
 --_______________________________________________________________
 function Camper_SendChatMsgSecureActionButtonMixin:ActivateWithAttributes()
-    d.print("ActivateWithAttributes called")
+    d.print("secureaction_chat: ActivateWithAttributes called")
     if not initiated then return end
     local valid, missing = self:ValidateBuffers()
     if not valid then
@@ -153,7 +153,7 @@ end
 local macroEndSnippet = "\n/script PlaySound(5274)"
 .. "\n/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
 function Camper_SendChatMsgSecureActionButtonMixin:SetToSendMessageToChannelIndex(channelIndex, message, tooltipTitle, tooltipText)
-    d.print("SetToSendMessageToChannelIndex called, channelIndex:", channelIndex, "message:", message, "Tootlip: ", tooltipTitle, tooltipText)
+    d.print("secureaction_chat: SetToSendMessageToChannelIndex called, channelIndex:", channelIndex, "message:", message, "Tootlip: ", tooltipTitle, tooltipText)
     if not initiated then return end
     if not channelIndex or not message then return end
     local macroText = "/c " .. channelIndex .. " " .. message .. macroEndSnippet
@@ -183,7 +183,7 @@ end
 function Camper_SendChatMsgSecureActionButtonMixin:Start_PromptUser(tooltipTitle, tooltipText, clickWarningMessage)
     if self.attributesActive then return end
     self.waitingPromptedAction = true
-    d.print("started wait-for-sitdown")
+    d.print("secureaction_chat: started wait-for-sitdown")
     self:DesaturateHierarchy(1)
     if not InCombatLockdown() then 
         self:Show()
@@ -195,7 +195,7 @@ end
 function Camper_SendChatMsgSecureActionButtonMixin:Cancel_PromptUser()
     if self.attributesActive then return end
     self.waitingPromptedAction = false
-    d.print("canceled wait-for-sitdown")
+    d.print("secureaction_chat: canceled wait-for-sitdown")
     self:DesaturateHierarchy(0)
     if not InCombatLockdown() then 
         self:Hide()
@@ -223,11 +223,11 @@ function Camper_SendChatMsgSecureActionButtonMixin:StartHideDelayer()
     self.hideTimer:SetText(hideTimerMessage .. delay)
     LU.SingleDelayer(delay, 0, THRESHOLD, self, function(remainingDelay)
         if remainingDelay > 0 then
-            d.print("Delay remaining: ", LU.SimplifyFloat(remainingDelay, 0))
+            d.print("secureaction_chat: Delay remaining: ", LU.SimplifyFloat(remainingDelay, 0))
             self.hideTimer:SetText(hideTimerMessage .. LU.SimplifyFloat(remainingDelay, 0))
         end
     end, function()
-        d.print("Delay ended. Hiding Frame.")
+        d.print("secureaction_chat: Delay ended. Hiding Frame.")
         self:ClearAttributes()
         self:Hide()
         self:ResetDelayer()
@@ -244,22 +244,22 @@ end
 -- function Camper_SendChatMsgSecureActionButtonMixin:PauseHideDelayer()
 --     self:SetScript("OnUpdate", nil)
 --     if self.remainingDelay then
---         d.print("Still have delay leftover: ", self.remainingDelay)
+--         d.print("secureaction_chat: Still have delay leftover: ", self.remainingDelay)
 --     end      
 -- end
 -- function Camper_SendChatMsgSecureActionButtonMixin:ContinueHideDelayer()
 --     if not self.remainingDelay then return end
 --     self:Show()WW
---     d.print("Continuing delay where left off", self.remainingDelay)
+--     d.print("secureaction_chat: Continuing delay where left off", self.remainingDelay)
 --     local delay = self.remainingDelay
 --     local threshold = delay / THRESHOLD_DIVIDER
 --     LU.SingleDelayer(delay, 0, threshold, self, function(remainingDelay)
 --         if remainingDelay > 0 then
 --             self.remainingDelay = remainingDelay
---             d.print("(Continue) Delay remaining: ", remainingDelay)
+--             d.print("secureaction_chat: (Continue) Delay remaining: ", remainingDelay)
 --         end
 --     end, function()
---         d.print("(Continue) Delay ended. Hiding Frame.")
+--         d.print("secureaction_chat: (Continue) Delay ended. Hiding Frame.")
 --         self.remainingDelay = nil
 --         self:Hide()
 --     end)
@@ -276,19 +276,19 @@ function Camper_SendChatMsgSecureActionButtonMixin.OnEvent(self, event, unit, ..
         -- Button activated --> player entered combat while active
         if self:IsShown() then
             self:Hide()
-            d.print("Hiding due to combat")
+            d.print("secureaction_chat: Hiding due to combat")
         end
     elseif event == "PLAYER_REGEN_ENABLED" then
         -- "SetToSendMessageToChannelIndex" function was called during combat, and now there are buffers waiting to be processed
         if self:ValidateBuffers() then
-            d.print("\"SetTo\" function was called during combat")
+            d.print("secureaction_chat: \"SetTo\" function was called during combat")
                 self:ActivateWithAttributes()
         -- Hide delay was ongoing when entering combat, and no new "SetToSendMessageToChannelIndex" function to overwrite it was called
         elseif self.delayerActive then
-            d.print("Remainder delay was not reset. Show and continue.")
+            d.print("secureaction_chat: Remainder delay was not reset. Show and continue.")
             self:Show()
         elseif self.waitingPromptedAction then
-            d.print("Was waiting for sitdown. Show and continue.")
+            d.print("secureaction_chat: Was waiting for sitdown. Show and continue.")
             self:Show()
         end
     end
@@ -304,7 +304,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:OnHide()
 end
 
 function Camper_SendChatMsgSecureActionButtonMixin:MacroSuccessful()
-    d.print("MACRO SUCCESSFUL!", self:GetDebugName())
+    d.print("secureaction_chat: MACRO SUCCESSFUL!", self:GetDebugName())
     self:ResetDelayer()
     self:ClearAttributes()
     self:Hide()
