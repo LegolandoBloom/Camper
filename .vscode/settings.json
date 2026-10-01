@@ -27,6 +27,7 @@
         "COMMUNITIES_DEFAULT_CHANNEL_NAME",
         "Camper_SetupConfigPanel",
         "Camper_DebugMenu",
-        "CamperDebug"
+        "CamperDebug",
+        "Camper_ActionSimulator"
     ]
 }
