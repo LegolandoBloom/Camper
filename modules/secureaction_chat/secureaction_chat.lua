@@ -200,8 +200,8 @@ function Camper_SendChatMsgSecureActionButtonMixin:Start_PromptUser(message_prom
     self.clickWarningMessage = clickWarningMessage
 end
 function Camper_SendChatMsgSecureActionButtonMixin:Cancel_PromptUser()
-    if self.attributesActive then return end
     self.waitingPromptedAction = false
+    if self.attributesActive then return end
     d.print("secureaction_chat: canceled wait-for-sitdown")
     self:DesaturateHierarchy(0)
     if not InCombatLockdown() then 

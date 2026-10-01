@@ -195,8 +195,8 @@ function cl:Start_PromptUser(message_promptUser, tooltipTitle, tooltipText, clic
     self.clickWarningMessage = clickWarningMessage
 end
 function cl:Cancel_PromptUser()
-    if self.linkActive then return end
     self.waitingPromptedAction = false
+    if self.linkActive then return end
     d.print("clickableLink: canceled wait-for-sitdown")
     self.activeTooltipTitle = nil
     self.activeTooltipText = nil
@@ -210,13 +210,13 @@ local THRESHOLD_DIVIDER = 5
 local THRESHOLD = 1
 local delayerFrame = CreateFrame("Frame")
 -- set it to 120 default for now. maybe add adjuster to configpanel later
-local delay = 120
+local DISABLE_DELAY = 20
 function cl:StartLinkDisableDelayer()
     -- local teeburu = self.savedVarTable
     -- local reference = self.reference
     -- local delay = teeburu[reference]
     self.delayerActive = true
-    LU.SingleDelayer(delay, 0, THRESHOLD, delayerFrame, function(remainingDelay)
+    LU.SingleDelayer(DISABLE_DELAY, 0, THRESHOLD, delayerFrame, function(remainingDelay)
         if remainingDelay > 0 then
             self.remainingDelay = remainingDelay
             d.print("clickableLink: Delay remaining: ", LU.SimplifyFloat(remainingDelay, 0))
