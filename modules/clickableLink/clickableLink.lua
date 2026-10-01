@@ -36,8 +36,14 @@ local testing = false
 local function linksCallback(_, link, text, button, chatFrame)
     local linkType, addonName, linkData = strsplit(":", link)
     if linkType == "addon" and addonName == "Camper" then
+        local inCombat = InCombatLockdown()
+        
         -- DevTools_Dump(cl)
         if cl.linkActive then
+            if inCombat then
+                print(T["Camper: Can't share waypoint while in Combat. After it ends, click again to share."])
+                return
+            end 
             if cl:IsTesting() then
                 securecall(C_ChatInfo.SendChatMessage, cl.sendMessage, "SAY")
             else
@@ -46,6 +52,10 @@ local function linksCallback(_, link, text, button, chatFrame)
             cl:ClearLink()
             cl:ResetDelayer()
         elseif cl.waitingPromptedAction then
+            if inCombat then
+                print(T["Camper: After combat ends, please locate the campfire -> /sit."])
+                return
+            end
             cl:PostClick()
         else
             print(T["Camper: Outdated link. Please locate/setup a new campfire to share the waypoint."])
@@ -56,13 +66,24 @@ EventRegistry:RegisterCallback("SetItemRef", linksCallback)
 
 
 local function cl_OnEnter(...)
-    if not cl.linkActive then return end
     local what, self, link, text, region, left, bottom, width, height = ...
-    if cl.linkActive or cl.waitingPromptedAction then
+    if cl.linkActive then
         GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR", 0, 0)
         GameTooltip:AddLine(cl.activeTooltipTitle)
         GameTooltip:AddLine("\n")
         GameTooltip:AddLine(cl.activeTooltipText, 1, 1, 1, false)
+        GameTooltip:Show()
+    elseif cl.waitingPromptedAction then
+        GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR", 0, 0)
+        GameTooltip:AddLine(T["Link pending activation."])
+        GameTooltip:AddLine("\n")
+        GameTooltip:AddLine(T["Please locate the campfire and do /sit before sharing."])
+        GameTooltip:Show()
+    else
+        GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR", 0, 0)
+        GameTooltip:AddLine(T["Outdated link."])
+        GameTooltip:AddLine("\n")
+        GameTooltip:AddLine(T["Please locate/setup a new campfire to share the waypoint."])
         GameTooltip:Show()
     end
     -- print("What: ", what)
@@ -210,7 +231,7 @@ local THRESHOLD_DIVIDER = 5
 local THRESHOLD = 1
 local delayerFrame = CreateFrame("Frame")
 -- set it to 120 default for now. maybe add adjuster to configpanel later
-local DISABLE_DELAY = 20
+local DISABLE_DELAY = 120
 function cl:StartLinkDisableDelayer()
     -- local teeburu = self.savedVarTable
     -- local reference = self.reference
@@ -244,7 +265,7 @@ function cl:ContinueLinkDisableDelayer()
     if not self.remainingDelay then return end
     d.print("clickableLink: Continuing delay where left off", self.remainingDelay)
     local delay = self.remainingDelay
-    LU.SingleDelayer(delay, 0, THRESHOLD, self, function(remainingDelay)
+    LU.SingleDelayer(delay, 0, THRESHOLD, delayerFrame, function(remainingDelay)
         if remainingDelay > 0 then
             self.remainingDelay = remainingDelay
             d.print("clickableLink: (Continue) Delay remaining: ", remainingDelay)
@@ -259,7 +280,7 @@ end
 
 
 local function cl_OnEvent(self, event, unit, ...)
-    if not self.initiated then return end
+    if not cl.initiated then return end
     local arg4, arg5 = ...
     event, unit, arg4, arg5 = LSec.ScrubSecret(event, unit, arg4, arg5)
     if event == "PLAYER_REGEN_DISABLED" then

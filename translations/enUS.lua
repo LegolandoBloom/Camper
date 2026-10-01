@@ -86,3 +86,13 @@ T["Camper: You've set up camp."] = colorCamper:WrapTextInColorCode("Camper: ") .
 T["Camper: Camp successfully located!"] = colorCamper:WrapTextInColorCode("Camper: ") .. "Camp successfully located!"
 T["Camper: Can't locate Campfire. Can't share waypoint."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Can't locate Campfire. Can't share waypoint."
 T["Camper: Outdated link. Please locate/setup a new campfire to share the waypoint."] = colorCamper:WrapTextInColorCode("Camper: ") .. "Outdated link. Please locate/setup a new campfire to share the waypoint."
+T["Camper: Can't share waypoint while in Combat. After it ends, click again to share."] = colorCamper:WrapTextInColorCode("Camper: ") 
+.. "Can't share waypoint while in Combat. After it ends, click again to share."
+T["Camper: After combat ends, please locate the campfire -> /sit."] = colorCamper:WrapTextInColorCode("Camper: ") .. "After combat ends, please locate the campfire -> " .. colorYello:WrapTextInColorCode("/sit") .. "."
+T["Outdated link. Please locate/setup a new campfire to share the waypoint."] = "Outdated link. Please locate/setup a new campfire to share the waypoint."
+
+T["Link pending activation."] = "Link " .. colorPurple:WrapTextInColorCode("pending activation.")
+T["Please locate the campfire and do /sit before sharing."] = colorWhite:WrapTextInColorCode("Please locate the campfire and do ") .. colorYello:WrapTextInColorCode("/sit ") .. colorWhite:WrapTextInColorCode("before sharing.")
+
+T["Outdated link."] = "Outdated link."
+T["Please locate/setup a new campfire to share the waypoint."] = colorGrae:WrapTextInColorCode("Please locate/setup a new campfire to share the waypoint.")

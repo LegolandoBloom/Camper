@@ -11,7 +11,9 @@ tg = Tooltip good?
 hf = Hide timer functional?
 csmg = Click. Is the sent message good?
 bph = Is the button properly hidden?
+ld = Is the link properly disabled(prints "Outdated Link")
 ccy = Is button "Can't click yet", as it should be?
+lw = does clicking the link print a warning "Please sit before clicking"
 nnn = Nothing should show up. No button. No chat message or prompt.
 
 ____ SUC ____
@@ -21,18 +23,19 @@ ECA -> LCA -> SUC : tg? csmg?
 SUC -> ECA : Is ECA simulator button properly disabled? tg? csmg?
 SUC -> SUC : does SUC override the previous SUC properly
 
+
 ____ ECA ____
-ECA -> ccy?
-ECA -> LCA : bph?
+ECA -> ccy/lw?
+ECA -> LCA : bph/ld?
 ECA -> X : bph?
 ECA -> X -> SIT : tg? hf? csmg?
 ECA -> X -> SIT -> LCA : tg? hf? csmg?
-ECA -> X -> SIT -> X -> ECA : ccy?
+ECA -> X -> SIT -> X -> ECA : ccy/lw?
 ECA -> LCA -> SIT : nnn?
 
 _____SUC overrides ECA_____
 SUC -> ECA : tg? csmg?
-ECA -> SUG -> ECA : tg? csmg?
+ECA -> SUC -> ECA : tg? csmg?
 SUC -> ECA -> LCA -> tg? csmg?
 
 
@@ -42,6 +45,8 @@ COMBAT_END
 
 ____Combat SUC____
 SUC -> COMBAT_START : bph? -> COMBAT_END : tg? hf? csmg?
+
+
 SUC -> COMBAT_START -> let simulator disable timer run out -> ECA -> COMBAT_END : tg? hf? csmg?(should be that of the setup camp)
 SUC -> COMBAT_START -> let simulator disable timer run out -> ECA -> SIT -> COMBAT_END : tg? hf? csmg?(should be that of the found camp)
 SUC -> COMBAT_START -> let simulator disable timer run out -> ECA -> LCA -> SIT -> COMBAT_END : tg? hf? csmg?(should be that of the setup camp)
@@ -60,3 +65,8 @@ Test if TestSpell Table Spells trigger SUC
 
 ____Aura Tester____
 Test if TestAura Feint triggers ECA
+
+
+
+**Clickable-Link Specific**
+ECA -> SUC -> (while SUC active) LCA : Does the 2nd click of the clickable link properly say "Link no longer active" as it should

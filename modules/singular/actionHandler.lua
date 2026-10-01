@@ -58,7 +58,10 @@ local waitingForSitDown = false
 
 -- __________________________________________________________________ Setup Camp __________________________________________________________________
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
-    if waitingForSitDown then secureButton:Cancel_PromptUser() end
+    if waitingForSitDown then 
+        secureButton:Cancel_PromptUser()
+        cl:Cancel_PromptUser()
+    end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local waypoint = LM:GetCurrentPositionWaypointLink()
     secureButton:SetToSendMessageToChannelIndex(s.message_activation.setupCamp_button, generalChat_index, s.message_send.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.setupCamp)
