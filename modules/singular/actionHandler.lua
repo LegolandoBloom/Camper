@@ -19,7 +19,13 @@ end)
 
 
 local s = {
-    message = {
+    message_activation = {
+        setupCamp_button = T["Camper: You've set up camp. Click the \'Camper Button\' to share the Waypoint!"],
+        setupCamp_link = T["Camper: You've set up camp."],
+        foundCamp_button = T["Camper: Button Activated. Click to share the camp Waypoint!"],
+        foundCamp_link = T["Camper: Camp successfully located!"],
+    },
+    message_send = {
         setupCamp = T["[Camper]: I've set up camp here!"], 
         foundCamp = T["[Camper]: I found a camp here!"],
         clickWarning = T["Camper: Please locate the campfire and do /sit before sharing."],
@@ -49,13 +55,13 @@ local waitingForSitDown = false
 
 -- __________________________________________________________________ Setup Camp __________________________________________________________________
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
-    print(T["Camper: You've set up camp. Click the \'Camper Button\' to share the Waypoint!"])
+    print()
     if waitingForSitDown then secureButton:Cancel_PromptUser() end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local waypoint = LM:GetCurrentPositionWaypointLink()
-    secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
-    print(T["Camper: You've set up camp."])
-    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.setupCamp)
+    secureButton:SetToSendMessageToChannelIndex(s.message_activation.setupCamp_button, generalChat_index, s.message_send.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.setupCamp)
+    print()
+    cl:SetToSendMessageToChannelIndex(s.message_activation.setupCamp_link, generalChat_index, s.message_send.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.setupCamp)
     foundDelayActive = true
     --__ Debug ___
     Camper_ActionSimulator:TogglePlayerSetupCampDelay(true)
@@ -96,8 +102,8 @@ pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
     d.print("Camper_PlayerFoundCamp")
     waitingForSitDown = true
     print(T["Camper: Detected Campfire nearby. If you want to share its [Waypoint]: please go towards it, and do /sit."])
-    secureButton:Start_PromptUser(s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message.clickWarning)
-    cl:Start_PromptUser(s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message.clickWarning)
+    secureButton:Start_PromptUser(s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message_send.clickWarning)
+    cl:Start_PromptUser(s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message_send.clickWarning)
 end)
 
 pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
@@ -107,12 +113,12 @@ pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
         cl:Cancel_PromptUser()
     end
     waitingForSitDown = false
-    print(T["Camper: Button Activated. Click to share the camp Waypoint!"])
+    print()
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local waypoint = LM:GetCurrentPositionWaypointLink()
-    secureButton:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
-    print(T["Camper: Camp successfully located!"])
-    cl:SetToSendMessageToChannelIndex(generalChat_index, s.message.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message.foundCamp)
+    secureButton:SetToSendMessageToChannelIndex(s.message_activation.foundCamp_button, generalChat_index, s.message_send.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.foundCamp)
+    print()
+    cl:SetToSendMessageToChannelIndex(s.message_activation.foundCamp_link, generalChat_index, s.message_send.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.foundCamp)
     
 end)
 -- ________________________________________________________________________________________________________________________________________________

@@ -105,17 +105,20 @@ end
 
 --___________________________ Buffers ___________________________
 function Camper_SendChatMsgSecureActionButtonMixin:ClearBuffers()
+    self.activationMessageBuffer = nil
     self.macroTextBuffer = nil
     self.tooltipTitleBuffer = nil
     self.tooltipTextBuffer = nil
 end
 function Camper_SendChatMsgSecureActionButtonMixin:ValidateBuffers()
+    if not self.activationMessageBuffer then return false, "activationMessageBuffer" end
     if not self.macroTextBuffer then return false, "macroTextBuffer" end
     if not self.tooltipTitleBuffer then return false, "tooltipTitleBuffer" end
     if not self.tooltipTextBuffer then return false, "tooltipTextBuffer" end
     return true
 end
 function Camper_SendChatMsgSecureActionButtonMixin:ActivateBuffers()
+    self.activationMessage = self.activationMessageBuffer
     self:SetAttribute("macrotext", self.macroTextBuffer)
     self.tooltipText = self.tooltipTextBuffer
     self.tooltipTitle = self.tooltipTitleBuffer
@@ -134,6 +137,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:ActivateWithAttributes()
     self:ActivateBuffers()
     self:ClearBuffers()
     self:Show()
+    print(self.activationMessage)
     self:StartHideDelayer()
     self.attributesActive = true
 end
@@ -143,6 +147,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:ClearAttributes()
     self:SetAttribute("macrotext", "")
     self:ClearBuffers()
     self.tooltipTitle = nil
+    self.activationMessage = nil
     self.tooltipText = nil
     self.attributesActive = false
 end
@@ -152,12 +157,13 @@ end
 -- _____________________________________ Setup/Found Camp _____________________________________
 local macroEndSnippet = "\n/script PlaySound(5274)"
 .. "\n/script Camper_SendChatMsgSecureActionButton:MacroSuccessful()"
-function Camper_SendChatMsgSecureActionButtonMixin:SetToSendMessageToChannelIndex(channelIndex, message, tooltipTitle, tooltipText)
-    d.print("secureaction_chat: SetToSendMessageToChannelIndex called, channelIndex:", channelIndex, "message:", message, "Tootlip: ", tooltipTitle, tooltipText)
+function Camper_SendChatMsgSecureActionButtonMixin:SetToSendMessageToChannelIndex(message_activation, channelIndex, message_send, tooltipTitle, tooltipText)
+    d.print("secureaction_chat: SetToSendMessageToChannelIndex called, channelIndex:", channelIndex, "message:", message_send, "Tootlip: ", tooltipTitle, tooltipText)
     if not initiated then return end
-    if not channelIndex or not message then return end
-    local macroText = "/c " .. channelIndex .. " " .. message .. macroEndSnippet
-    if self:IsTesting() then macroText = "/s " .. message .. macroEndSnippet end
+    if not channelIndex or not message_send then return end
+    local macroText = "/c " .. channelIndex .. " " .. message_send .. macroEndSnippet
+    if self:IsTesting() then macroText = "/s " .. message_send .. macroEndSnippet end
+    self.activationMessageBuffer = message_activation
     self.macroTextBuffer = macroText
     self.tooltipTitleBuffer = tooltipTitle
     self.tooltipTextBuffer = tooltipText
