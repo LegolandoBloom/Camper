@@ -196,11 +196,11 @@ function cl:Start_PromptUser(message_promptUser, tooltipTitle, tooltipText, clic
 end
 function cl:Cancel_PromptUser()
     self.waitingPromptedAction = false
+    self.clickWarningMessage = nil
     if self.linkActive then return end
     d.print("clickableLink: canceled wait-for-sitdown")
     self.activeTooltipTitle = nil
     self.activeTooltipText = nil
-    self.clickWarningMessage = nil
 end
 -- _______________________________
 

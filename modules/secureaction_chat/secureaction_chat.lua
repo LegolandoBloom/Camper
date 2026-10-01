@@ -201,6 +201,7 @@ function Camper_SendChatMsgSecureActionButtonMixin:Start_PromptUser(message_prom
 end
 function Camper_SendChatMsgSecureActionButtonMixin:Cancel_PromptUser()
     self.waitingPromptedAction = false
+    self.clickWarningMessage = nil
     if self.attributesActive then return end
     d.print("secureaction_chat: canceled wait-for-sitdown")
     self:DesaturateHierarchy(0)
@@ -209,7 +210,6 @@ function Camper_SendChatMsgSecureActionButtonMixin:Cancel_PromptUser()
     end
     self.tooltipTitle = nil
     self.tooltipText = nil
-    self.clickWarningMessage = nil
 end
 -- _______________________________
 
