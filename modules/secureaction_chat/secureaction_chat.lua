@@ -186,10 +186,11 @@ function Camper_SendChatMsgSecureActionButtonMixin:PostClick(button, down)
 end
 
 
-function Camper_SendChatMsgSecureActionButtonMixin:Start_PromptUser(tooltipTitle, tooltipText, clickWarningMessage)
+function Camper_SendChatMsgSecureActionButtonMixin:Start_PromptUser(message_promptUser, tooltipTitle, tooltipText, clickWarningMessage)
     if self.attributesActive then return end
     self.waitingPromptedAction = true
     d.print("secureaction_chat: started wait-for-sitdown")
+    print(message_promptUser)
     self:DesaturateHierarchy(1)
     if not InCombatLockdown() then 
         self:Show()

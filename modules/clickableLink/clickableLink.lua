@@ -185,9 +185,10 @@ function cl:PostClick()
     if not warning then return end
     print(warning)
 end
-function cl:Start_PromptUser(tooltipTitle, tooltipText, clickWarningMessage)
+function cl:Start_PromptUser(message_promptUser, tooltipTitle, tooltipText, clickWarningMessage)
     if self.linkActive then return end
     self.waitingPromptedAction = true
+    print(message_promptUser)
     d.print("clickableLink: started wait-for-sitdown")
     self.activeTooltipTitle = tooltipTitle
     self.activeTooltipText = tooltipText
