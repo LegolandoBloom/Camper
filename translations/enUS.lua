@@ -55,7 +55,6 @@ T["Click to send to General Chat: "] = "Click " .. colorWhite:WrapTextInColorCod
 T["Announce Camp!"] = "Announce Camp!"
 
 T["Hiding in: "] = "Hiding in: "
-T["Hide After:"] = "Hide After:"
 T["seconds"] = "seconds"
 
 
@@ -96,3 +95,16 @@ T["Please locate the campfire and do /sit before sharing."] = colorWhite:WrapTex
 
 T["Outdated link."] = "Outdated link."
 T["Please locate/setup a new campfire to share the waypoint."] = colorGrae:WrapTextInColorCode("Please locate/setup a new campfire to share the waypoint.")
+
+
+T["Share Method:"] = "Share Method:"
+T["Select Sharing Method"] = "Select Sharing Method"
+
+
+T["Hide Button After:"] = "Hide Button After:"
+
+T["Camper: A clickable link will be sent to your chatbox when you setup/find a campfire.(Default chat window)"] = colorCamper:WrapTextInColorCode("Camper: ") 
+.. "A " .. colorYello:WrapTextInColorCode("clickable link ") .. "will be sent to your chatbox when you setup/find a campfire.(Default chat window)"
+
+T["Camper: A popup button will appear when you setup/find a campfire."] = colorCamper:WrapTextInColorCode("Camper: ") .. "A " 
+.. colorYello:WrapTextInColorCode("popup button ") .. "will appear when you setup/find a campfire."

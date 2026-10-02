@@ -54,24 +54,24 @@ local delayFrame = CreateFrame("Frame")
 local foundDelayActive = false
 local waitingForSitDown = false
 
-local enum_ChosenMethod = {
+local enum_shareMethod = {
     ClickableLink = 1,
     PopupButton = 2,
 }
 
--- NOTE: Not doing "chosenMethod" checks on Cancel_PromptUser - it's always good to clear pending things regardless which one is currently actively being used as a general programming principle
+-- NOTE: Not doing "shareMethod" checks on Cancel_PromptUser - it's always good to clear pending things regardless which one is currently actively being used as a general programming principle
 -- __________________________________________________________________ Setup Camp __________________________________________________________________
 pr:RegisterCallback("Camper_PlayerSetCamp", function(ownerID)
-    local chosenMethod = CamperConfig.dropdownMenus.chosenMethod
+    local shareMethod = CamperConfig.dropdownMenus.shareMethod
     if waitingForSitDown then 
         secureButton:Cancel_PromptUser()
         cl:Cancel_PromptUser()
     end
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local waypoint = LM:GetCurrentPositionWaypointLink()
-    if chosenMethod == enum_ChosenMethod["ClickableLink"] then
+    if shareMethod == enum_shareMethod["ClickableLink"] then
         cl:SetToSendMessageToChannelIndex(s.message_activation.setupCamp_link, generalChat_index, s.message_send.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.setupCamp)
-    elseif chosenMethod == enum_ChosenMethod["PopupButton"] then
+    elseif shareMethod == enum_shareMethod["PopupButton"] then
         secureButton:SetToSendMessageToChannelIndex(s.message_activation.setupCamp_button, generalChat_index, s.message_send.setupCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.setupCamp)
     end
     foundDelayActive = true
@@ -101,7 +101,7 @@ pr:RegisterCallback("Camper_PlayerNOTFoundCamp", function(ownerID)
 end)
 
 pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
-    local chosenMethod = CamperConfig.dropdownMenus.chosenMethod
+    local shareMethod = CamperConfig.dropdownMenus.shareMethod
     -- Don't accept PlayerFoundCamp triggers for 15 seconds after PlayerSetCamp(So that it doesn't trigger again from own aura)
     -- The Campfire Aura's instanceID will still have been saved in auraTracker, so it won't unnecessarily trigger even after the 15 seconds passes
     if foundDelayActive == true then 
@@ -114,15 +114,15 @@ pr:RegisterCallback("Camper_PlayerFoundCamp", function(ownerID)
     end
     d.print("Camper_PlayerFoundCamp")
     waitingForSitDown = true
-    if chosenMethod == enum_ChosenMethod["ClickableLink"] then
+    if shareMethod == enum_shareMethod["ClickableLink"] then
         cl:Start_PromptUser(s.message_promptUser.waitingForSitDown_both, s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message_send.clickWarning)
-    elseif chosenMethod == enum_ChosenMethod["PopupButton"] then
+    elseif shareMethod == enum_shareMethod["PopupButton"] then
         secureButton:Start_PromptUser(s.message_promptUser.waitingForSitDown_both, s.tooltipTitle.waitingForSitDown, s.tooltip.waitingForSitDown, s.message_send.clickWarning)
     end
 end)
 
 pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
-    local chosenMethod = CamperConfig.dropdownMenus.chosenMethod
+    local shareMethod = CamperConfig.dropdownMenus.shareMethod
     if not waitingForSitDown then return end
     if waitingForSitDown then 
         secureButton:Cancel_PromptUser()
@@ -131,9 +131,9 @@ pr:RegisterCallback("Camper_PlayerSit", function(ownerID)
     waitingForSitDown = false
     local generalChat_index = LC:GetChatChannelIndexFromName(COMMUNITIES_DEFAULT_CHANNEL_NAME)
     local waypoint = LM:GetCurrentPositionWaypointLink()
-    if chosenMethod == enum_ChosenMethod["ClickableLink"] then
+    if shareMethod == enum_shareMethod["ClickableLink"] then
         cl:SetToSendMessageToChannelIndex(s.message_activation.foundCamp_link, generalChat_index, s.message_send.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.foundCamp)
-    elseif chosenMethod == enum_ChosenMethod["PopupButton"] then
+    elseif shareMethod == enum_shareMethod["PopupButton"] then
         secureButton:SetToSendMessageToChannelIndex(s.message_activation.foundCamp_button, generalChat_index, s.message_send.foundCamp .. waypoint, s.tooltipTitle.sendToGeneralChat, s.message_send.foundCamp)
     end
     

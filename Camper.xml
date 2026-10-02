@@ -7,7 +7,7 @@
         </Scripts>
         <Frames>
             <Frame name="$parent_ConfigPanel" parentKey="configPanel" toplevel="true" clampedToScreen="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" hidden="true">
-                <Size x="200" y="180"/>
+                <Size x="230" y="220"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="UIParent" relativePoint="LEFT" x="500" y="100"/>
                 </Anchors>
@@ -53,21 +53,21 @@
                             </Frame> -->
                         </Frames>
                     </Frame>
-                    <EditBox name="Camper_HideAfterEditBox" parentKey="hideAfter" letters="3" scale="1.2" inherits="Legolando_NumericInputBoxWithForceNegativeTempate_Camper">
+                    <EditBox name="Camper_HideAfterEditBox" parentKey="hideAfter" letters="3" scale="1.1" inherits="Legolando_NumericInputBoxWithForceNegativeTempate_Camper" hidden="true">
                         <Size x="38" y="25"/>
                         <Anchors>
-                            <Anchor point="TOPLEFT" x="25" y="-40"/>
+                            <Anchor point="TOPLEFT" x="26" y="-90"/>
                         </Anchors>
                         <Layers>
                             <Layer level="ARTWORK">
                                 <FontString name="$parent_UnitTextTop" parentKey="unitTextTop" inherits="GameFontNormalSmall">
                                     <Anchors>
-                                        <Anchor point="BOTTOM" relativeKey="$parent" relativePoint="TOP" x="0" y="0"/>
+                                        <Anchor point="BOTTOMLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="-6" y="0"/>
                                     </Anchors>
                                 </FontString>
                                 <FontString name="$parent_UnitTextBottom" parentKey="unitTextBottom" inherits="GameFontNormalSmall">
                                     <Anchors>
-                                        <Anchor point="TOP" relativeKey="$parent" relativePoint="BOTTOM" x="-2" y="0"/>
+                                        <Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" x="-6" y="0"/>
                                     </Anchors>
                                 </FontString>
                             </Layer>

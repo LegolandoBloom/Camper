@@ -50,7 +50,7 @@ function Init_CamperSavedVariables()
     if CamperConfig.editBoxes == nil then CamperConfig.editBoxes = {} end
     if CamperConfig.editBoxes.hideAfter == nil then CamperConfig.editBoxes.hideAfter = 16 end
     if CamperConfig.dropdownMenus == nil then CamperConfig.dropdownMenus = {} end
-    if CamperConfig.dropdownMenus.chosenMethod == nil then CamperConfig.dropdownMenus.chosenMethod = 1 end
+    if CamperConfig.dropdownMenus.shareMethod == nil then CamperConfig.dropdownMenus.shareMethod = 1 end
 
 
     if CamperCharacter == nil then CamperCharacter = {} end
