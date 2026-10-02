@@ -31,8 +31,6 @@ SLASH_CAMPERTEST1 = "/camptest"
 
 local link_clickToWaypoint = "|cFFFFFF00|Haddon:Camper:ClickToWaypoint|h[Click here to share the Waypoint!]|h|r"
 
-local testing = false
-
 local function linksCallback(_, link, text, button, chatFrame)
     local linkType, addonName, linkData = strsplit(":", link)
     if linkType == "addon" and addonName == "Camper" then

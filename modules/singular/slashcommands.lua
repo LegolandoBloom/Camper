@@ -19,6 +19,12 @@ SlashCmdList["CAMPERRESET"] = function()
     -- do something maybe
 end
 
+SLASH_CAMPERISTESTING1 = "/campistest"
+SlashCmdList["CAMPERISTESTING"] = function()
+    -- this is analogous to IsTesting in secureChat and clickableLink
+    print(CamperDebug.checkboxes.simulationEnabled or CamperDebug.checkboxes.spellTester)
+end
+
 
 SLASH_CAMPERSETTINGS1 = "/camper"
 SLASH_CAMPERSETTINGS2 = "/campcamp"
@@ -33,3 +39,4 @@ SlashCmdList["CAMPERSETTINGS"] = function()
         Camper.configPanel:Show()
     end
 end
+
