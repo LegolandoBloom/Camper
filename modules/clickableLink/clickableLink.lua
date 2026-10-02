@@ -65,6 +65,9 @@ EventRegistry:RegisterCallback("SetItemRef", linksCallback)
 
 local function cl_OnEnter(...)
     local what, self, link, text, region, left, bottom, width, height = ...
+    if not link then return end
+    local linkType, addonName, linkData = strsplit(":", link)
+    if linkType ~= "addon" or addonName ~= "Camper" then return end
     if cl.linkActive then
         GameTooltip:SetOwner(UIParent, "ANCHOR_CURSOR", 0, 0)
         GameTooltip:AddLine(cl.activeTooltipTitle)
